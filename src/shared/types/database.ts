@@ -1967,6 +1967,265 @@ export type Database = {
           },
         ]
       }
+      work_order_items: {
+        Row: {
+          id: string
+          work_order_id: string
+          product_id: string
+          quantity: number
+          stock_location_id: string
+          stock_consumed: boolean
+          consumed_at: string | null
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          work_order_id: string
+          product_id: string
+          quantity: number
+          stock_location_id: string
+          stock_consumed?: boolean
+          consumed_at?: string | null
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          work_order_id?: string
+          product_id?: string
+          quantity?: number
+          stock_location_id?: string
+          stock_consumed?: boolean
+          consumed_at?: string | null
+          notes?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'work_order_items_work_order_id_fkey'
+            columns: ['work_order_id']
+            isOneToOne: false
+            referencedRelation: 'work_orders'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'work_order_items_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'work_order_items_stock_location_id_fkey'
+            columns: ['stock_location_id']
+            isOneToOne: false
+            referencedRelation: 'stock_locations'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      work_order_photos: {
+        Row: {
+          id: string
+          work_order_id: string
+          storage_path: string
+          caption: string | null
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          work_order_id: string
+          storage_path: string
+          caption?: string | null
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          work_order_id?: string
+          storage_path?: string
+          caption?: string | null
+          created_by?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'work_order_photos_work_order_id_fkey'
+            columns: ['work_order_id']
+            isOneToOne: false
+            referencedRelation: 'work_orders'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'work_order_photos_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      work_order_status_history: {
+        Row: {
+          id: string
+          work_order_id: string
+          from_status: string | null
+          to_status: string
+          note: string | null
+          changed_by: string | null
+          changed_at: string
+        }
+        Insert: {
+          id?: string
+          work_order_id: string
+          from_status?: string | null
+          to_status: string
+          note?: string | null
+          changed_by?: string | null
+          changed_at?: string
+        }
+        Update: {
+          id?: string
+          work_order_id?: string
+          from_status?: string | null
+          to_status?: string
+          note?: string | null
+          changed_by?: string | null
+          changed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'work_order_status_history_work_order_id_fkey'
+            columns: ['work_order_id']
+            isOneToOne: false
+            referencedRelation: 'work_orders'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'work_order_status_history_changed_by_fkey'
+            columns: ['changed_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      work_order_warranties: {
+        Row: {
+          id: string
+          work_order_id: string
+          warranty_end_date: string | null
+          notes: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          work_order_id: string
+          warranty_end_date?: string | null
+          notes: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          work_order_id?: string
+          warranty_end_date?: string | null
+          notes?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'work_order_warranties_work_order_id_fkey'
+            columns: ['work_order_id']
+            isOneToOne: false
+            referencedRelation: 'work_orders'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      work_orders: {
+        Row: {
+          id: string
+          internal_code: string
+          equipment_label: string
+          defect_description: string | null
+          diagnosis: string | null
+          technician_id: string | null
+          responsible_user_id: string
+          customer_name: string | null
+          status: string
+          priority: string
+          opened_at: string
+          last_activity_at: string
+          closed_at: string | null
+          notes: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          internal_code?: string
+          equipment_label: string
+          defect_description?: string | null
+          diagnosis?: string | null
+          technician_id?: string | null
+          responsible_user_id: string
+          customer_name?: string | null
+          status?: string
+          priority?: string
+          opened_at?: string
+          last_activity_at?: string
+          closed_at?: string | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          internal_code?: string
+          equipment_label?: string
+          defect_description?: string | null
+          diagnosis?: string | null
+          technician_id?: string | null
+          responsible_user_id?: string
+          customer_name?: string | null
+          status?: string
+          priority?: string
+          opened_at?: string
+          last_activity_at?: string
+          closed_at?: string | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'work_orders_technician_id_fkey'
+            columns: ['technician_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'work_orders_responsible_user_id_fkey'
+            columns: ['responsible_user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'work_orders_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       weekly_actions: {
         Row: {
           completed_at: string | null
@@ -2075,6 +2334,7 @@ export type Database = {
       can_manage_product_catalog: { Args: never; Returns: boolean }
       can_manage_purchases: { Args: never; Returns: boolean }
       can_manage_receiving: { Args: never; Returns: boolean }
+      can_manage_workshop: { Args: never; Returns: boolean }
       dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */
       eval_product_registration: {
@@ -2112,6 +2372,11 @@ export type Database = {
       }
       purchase_sync_suggestions_from_min_stock: { Args: never; Returns: number }
       receipt_release_for_sale: { Args: { p_receipt_id: string }; Returns: undefined }
+      workshop_consume_part_stock: {
+        Args: { p_item_id: string; p_justification: string }
+        Returns: number
+      }
+      workshop_sync_stalled_os_alerts: { Args: { p_days?: number }; Returns: number }
       is_current_user_admin: { Args: never; Returns: boolean }
       record_gestao_import_snapshot: {
         Args: { p_job_id: string }

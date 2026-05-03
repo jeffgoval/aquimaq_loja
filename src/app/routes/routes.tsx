@@ -17,6 +17,8 @@ import { PurchasesAccess } from '@modules/purchases/routes/PurchasesAccess';
 import { PurchasesPage } from '@modules/purchases/routes/PurchasesPage';
 import { ReceivingAccess } from '@modules/receiving/routes/ReceivingAccess';
 import { ReceivingPage } from '@modules/receiving/routes/ReceivingPage';
+import { WorkshopAccess } from '@modules/workshop/routes/WorkshopAccess';
+import { WorkshopPage } from '@modules/workshop/routes/WorkshopPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -60,6 +62,10 @@ export function AppRoutes() {
 
         <Route path="receiving" element={<ReceivingAccess />}>
           <Route index element={<ReceivingPage />} />
+        </Route>
+
+        <Route path="workshop" element={<WorkshopAccess />}>
+          <Route index element={<WorkshopPage />} />
         </Route>
 
         <Route path="tasks" element={<TasksPage />} />
