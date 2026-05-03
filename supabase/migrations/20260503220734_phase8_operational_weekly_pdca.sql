@@ -1,5 +1,6 @@
 -- Fase 8 — Indicadores operacionais (agregação na app), rotina semanal (pauta + registro + tarefas), melhorias PDCA leve.
 -- Pré-requisito: profiles, tasks, touch_updated_at, log_row_audit, is_admin_or_gestor.
+-- Versão alinhada ao registo aplicado no remoto (MCP apply_migration).
 
 -- ---------------------------------------------------------------------------
 -- weekly_actions → tasks
