@@ -1400,6 +1400,183 @@ export type Database = {
           },
         ]
       }
+      receipt_items: {
+        Row: {
+          id: string
+          receipt_id: string
+          product_id: string
+          expected_qty: number | null
+          received_qty: number
+          unit_cost_expected: number | null
+          unit_cost_received: number
+          batch_code: string | null
+          expiry_date: string | null
+          damage_notes: string | null
+          divergence_notes: string | null
+          divergence_resolved: boolean
+          chk_product: boolean
+          chk_qty: boolean
+          chk_unit: boolean
+          chk_cost: boolean
+          chk_batch_expiry: boolean
+          chk_damage: boolean
+          chk_divergence: boolean
+          chk_location: boolean
+          stock_location_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          receipt_id: string
+          product_id: string
+          expected_qty?: number | null
+          received_qty?: number
+          unit_cost_expected?: number | null
+          unit_cost_received?: number
+          batch_code?: string | null
+          expiry_date?: string | null
+          damage_notes?: string | null
+          divergence_notes?: string | null
+          divergence_resolved?: boolean
+          chk_product?: boolean
+          chk_qty?: boolean
+          chk_unit?: boolean
+          chk_cost?: boolean
+          chk_batch_expiry?: boolean
+          chk_damage?: boolean
+          chk_divergence?: boolean
+          chk_location?: boolean
+          stock_location_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          receipt_id?: string
+          product_id?: string
+          expected_qty?: number | null
+          received_qty?: number
+          unit_cost_expected?: number | null
+          unit_cost_received?: number
+          batch_code?: string | null
+          expiry_date?: string | null
+          damage_notes?: string | null
+          divergence_notes?: string | null
+          divergence_resolved?: boolean
+          chk_product?: boolean
+          chk_qty?: boolean
+          chk_unit?: boolean
+          chk_cost?: boolean
+          chk_batch_expiry?: boolean
+          chk_damage?: boolean
+          chk_divergence?: boolean
+          chk_location?: boolean
+          stock_location_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'receipt_items_receipt_id_fkey'
+            columns: ['receipt_id']
+            isOneToOne: false
+            referencedRelation: 'receipts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'receipt_items_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'receipt_items_stock_location_id_fkey'
+            columns: ['stock_location_id']
+            isOneToOne: false
+            referencedRelation: 'stock_locations'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      receipts: {
+        Row: {
+          id: string
+          supplier_id: string
+          purchase_suggestion_id: string | null
+          invoice_ref: string | null
+          arrived_at: string
+          responsible_user_id: string
+          status: string
+          chk_supplier: boolean
+          chk_invoice: boolean
+          notes: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          supplier_id: string
+          purchase_suggestion_id?: string | null
+          invoice_ref?: string | null
+          arrived_at?: string
+          responsible_user_id: string
+          status?: string
+          chk_supplier?: boolean
+          chk_invoice?: boolean
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          supplier_id?: string
+          purchase_suggestion_id?: string | null
+          invoice_ref?: string | null
+          arrived_at?: string
+          responsible_user_id?: string
+          status?: string
+          chk_supplier?: boolean
+          chk_invoice?: boolean
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'receipts_supplier_id_fkey'
+            columns: ['supplier_id']
+            isOneToOne: false
+            referencedRelation: 'suppliers'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'receipts_purchase_suggestion_id_fkey'
+            columns: ['purchase_suggestion_id']
+            isOneToOne: false
+            referencedRelation: 'purchase_suggestions'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'receipts_responsible_user_id_fkey'
+            columns: ['responsible_user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'receipts_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       result_centers: {
         Row: {
           created_at: string
@@ -1897,6 +2074,7 @@ export type Database = {
       can_manage_inventory: { Args: never; Returns: boolean }
       can_manage_product_catalog: { Args: never; Returns: boolean }
       can_manage_purchases: { Args: never; Returns: boolean }
+      can_manage_receiving: { Args: never; Returns: boolean }
       dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */
       eval_product_registration: {
@@ -1933,6 +2111,7 @@ export type Database = {
         Returns: undefined
       }
       purchase_sync_suggestions_from_min_stock: { Args: never; Returns: number }
+      receipt_release_for_sale: { Args: { p_receipt_id: string }; Returns: undefined }
       is_current_user_admin: { Args: never; Returns: boolean }
       record_gestao_import_snapshot: {
         Args: { p_job_id: string }
