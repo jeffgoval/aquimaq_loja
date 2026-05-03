@@ -13,6 +13,8 @@ import { ProductImportPage } from '@modules/products/routes/ProductImportPage';
 import { InventoryAccess } from '@modules/inventory/routes/InventoryAccess';
 import { InventoryPage } from '@modules/inventory/routes/InventoryPage';
 import { TasksPage } from '@modules/tasks/routes/TasksPage';
+import { PurchasesAccess } from '@modules/purchases/routes/PurchasesAccess';
+import { PurchasesPage } from '@modules/purchases/routes/PurchasesPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -48,6 +50,10 @@ export function AppRoutes() {
 
         <Route path="inventory" element={<InventoryAccess />}>
           <Route index element={<InventoryPage />} />
+        </Route>
+
+        <Route path="purchases" element={<PurchasesAccess />}>
+          <Route index element={<PurchasesPage />} />
         </Route>
 
         <Route path="tasks" element={<TasksPage />} />

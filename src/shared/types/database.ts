@@ -836,6 +836,78 @@ export type Database = {
           },
         ]
       }
+      product_quoted_cost_history: {
+        Row: {
+          id: string
+          product_id: string
+          supplier_id: string
+          unit_price: number
+          quantity: number | null
+          purchase_quote_id: string | null
+          purchase_suggestion_id: string | null
+          recorded_at: string
+          recorded_by: string | null
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          supplier_id: string
+          unit_price: number
+          quantity?: number | null
+          purchase_quote_id?: string | null
+          purchase_suggestion_id?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          supplier_id?: string
+          unit_price?: number
+          quantity?: number | null
+          purchase_quote_id?: string | null
+          purchase_suggestion_id?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'product_quoted_cost_history_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_quoted_cost_history_supplier_id_fkey'
+            columns: ['supplier_id']
+            isOneToOne: false
+            referencedRelation: 'suppliers'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_quoted_cost_history_purchase_quote_id_fkey'
+            columns: ['purchase_quote_id']
+            isOneToOne: false
+            referencedRelation: 'purchase_quotes'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_quoted_cost_history_purchase_suggestion_id_fkey'
+            columns: ['purchase_suggestion_id']
+            isOneToOne: false
+            referencedRelation: 'purchase_suggestions'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_quoted_cost_history_recorded_by_fkey'
+            columns: ['recorded_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       product_score_history: {
         Row: {
           changed_by: string | null
@@ -1167,6 +1239,166 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      purchase_quotes: {
+        Row: {
+          id: string
+          suggestion_id: string
+          supplier_id: string
+          quantity: number
+          unit_price: number
+          lead_time_days: number | null
+          payment_terms: string | null
+          notes: string | null
+          status: string
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          suggestion_id: string
+          supplier_id: string
+          quantity: number
+          unit_price: number
+          lead_time_days?: number | null
+          payment_terms?: string | null
+          notes?: string | null
+          status?: string
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          suggestion_id?: string
+          supplier_id?: string
+          quantity?: number
+          unit_price?: number
+          lead_time_days?: number | null
+          payment_terms?: string | null
+          notes?: string | null
+          status?: string
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'purchase_quotes_suggestion_id_fkey'
+            columns: ['suggestion_id']
+            isOneToOne: false
+            referencedRelation: 'purchase_suggestions'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchase_quotes_supplier_id_fkey'
+            columns: ['supplier_id']
+            isOneToOne: false
+            referencedRelation: 'suppliers'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchase_quotes_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      purchase_suggestions: {
+        Row: {
+          id: string
+          product_id: string
+          quantity_suggested: number
+          gerencial_qty_snapshot: number
+          min_stock_snapshot: number | null
+          priority: string
+          origin: string
+          source_alert_id: string | null
+          status: string
+          responsible_user_id: string
+          notes: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+          approved_by: string | null
+          approved_at: string | null
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          quantity_suggested: number
+          gerencial_qty_snapshot?: number
+          min_stock_snapshot?: number | null
+          priority?: string
+          origin?: string
+          source_alert_id?: string | null
+          status?: string
+          responsible_user_id: string
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+          approved_by?: string | null
+          approved_at?: string | null
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          quantity_suggested?: number
+          gerencial_qty_snapshot?: number
+          min_stock_snapshot?: number | null
+          priority?: string
+          origin?: string
+          source_alert_id?: string | null
+          status?: string
+          responsible_user_id?: string
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+          approved_by?: string | null
+          approved_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'purchase_suggestions_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchase_suggestions_source_alert_id_fkey'
+            columns: ['source_alert_id']
+            isOneToOne: false
+            referencedRelation: 'alerts'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchase_suggestions_responsible_user_id_fkey'
+            columns: ['responsible_user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchase_suggestions_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'purchase_suggestions_approved_by_fkey'
+            columns: ['approved_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       result_centers: {
         Row: {
@@ -1661,8 +1893,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_approve_purchases: { Args: never; Returns: boolean }
       can_manage_inventory: { Args: never; Returns: boolean }
       can_manage_product_catalog: { Args: never; Returns: boolean }
+      can_manage_purchases: { Args: never; Returns: boolean }
       dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */
       eval_product_registration: {
@@ -1690,6 +1924,15 @@ export type Database = {
       }
       has_role: { Args: { p_roles: string[] }; Returns: boolean }
       is_admin_or_gestor: { Args: never; Returns: boolean }
+      purchase_suggestion_approve: {
+        Args: { p_quote_id: string; p_suggestion_id: string }
+        Returns: undefined
+      }
+      purchase_suggestion_request_approval: {
+        Args: { p_suggestion_id: string }
+        Returns: undefined
+      }
+      purchase_sync_suggestions_from_min_stock: { Args: never; Returns: number }
       is_current_user_admin: { Args: never; Returns: boolean }
       record_gestao_import_snapshot: {
         Args: { p_job_id: string }

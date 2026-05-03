@@ -12,6 +12,10 @@ export interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   emptyMessage?: string;
   getRowId?: (row: TData, index: number) => string;
+  /** Optional row click (e.g. selection). */
+  onRowClick?: (row: TData) => void;
+  /** Extra classes per row. */
+  rowClassName?: (row: TData) => string | undefined;
 }
 
 /**
@@ -23,6 +27,8 @@ export function DataTable<TData, TValue>({
   isLoading = false,
   emptyMessage = 'Nenhum registro.',
   getRowId,
+  onRowClick,
+  rowClassName,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -67,8 +73,23 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
+                role={onRowClick ? 'button' : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onRowClick(row.original);
+                        }
+                      }
+                    : undefined
+                }
                 className={cn(
                   'border-b border-border transition-colors last:border-0 hover:bg-surface-muted/40',
+                  onRowClick && 'cursor-pointer',
+                  rowClassName?.(row.original),
                 )}
               >
                 {row.getVisibleCells().map((cell) => (
