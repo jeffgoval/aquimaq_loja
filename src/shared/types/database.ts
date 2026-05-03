@@ -118,6 +118,100 @@ export type Database = {
           },
         ]
       }
+      crm_feature_catalog: {
+        Row: {
+          flag_key: string
+          label: string
+          sort_order: number
+        }
+        Insert: {
+          flag_key: string
+          label: string
+          sort_order?: number
+        }
+        Update: {
+          flag_key?: string
+          label?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      crm_feature_role_flags: {
+        Row: {
+          enabled: boolean
+          flag_key: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          enabled?: boolean
+          flag_key: string
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          enabled?: boolean
+          flag_key?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'crm_feature_role_flags_flag_key_fkey'
+            columns: ['flag_key']
+            isOneToOne: false
+            referencedRelation: 'crm_feature_catalog'
+            referencedColumns: ['flag_key']
+          },
+        ]
+      }
+      crm_permission_catalog: {
+        Row: {
+          key: string
+          label: string
+          sort_order: number
+        }
+        Insert: {
+          key: string
+          label: string
+          sort_order?: number
+        }
+        Update: {
+          key?: string
+          label?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      crm_role_permissions: {
+        Row: {
+          allowed: boolean
+          permission_key: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          allowed?: boolean
+          permission_key: string
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          allowed?: boolean
+          permission_key?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'crm_role_permissions_permission_key_fkey'
+            columns: ['permission_key']
+            isOneToOne: false
+            referencedRelation: 'crm_permission_catalog'
+            referencedColumns: ['key']
+          },
+        ]
+      }
       brands: {
         Row: {
           created_at: string
@@ -2924,6 +3018,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      crm_is_settings_admin: { Args: never; Returns: boolean }
       can_approve_purchases: { Args: never; Returns: boolean }
       can_manage_inventory: { Args: never; Returns: boolean }
       can_manage_financial_panel: { Args: never; Returns: boolean }

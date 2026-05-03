@@ -29,6 +29,8 @@ import { ManagementPanelAccess } from '@modules/management-panel/routes/Manageme
 import { ManagementPanelPage } from '@modules/management-panel/routes/ManagementPanelPage';
 import { FinancialPanelAccess } from '@modules/financial-panel/routes/FinancialPanelAccess';
 import { FinancialPanelPage } from '@modules/financial-panel/routes/FinancialPanelPage';
+import { SettingsAccess } from '@modules/settings/routes/SettingsAccess';
+import { SettingsPage } from '@modules/settings/routes/SettingsPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -98,6 +100,10 @@ export function AppRoutes() {
 
         <Route path="financial-panel" element={<FinancialPanelAccess />}>
           <Route index element={<FinancialPanelPage />} />
+        </Route>
+
+        <Route path="settings" element={<SettingsAccess />}>
+          <Route index element={<SettingsPage />} />
         </Route>
       </Route>
 

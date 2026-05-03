@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useCurrentUser } from '@modules/auth/hooks/useAuth';
+import { useCrmAccess } from '@modules/settings/hooks/useCrmAccess';
 import { cn } from '@shared/lib/cn';
 import { NAVIGATION, type NavItem } from './navigation';
 
@@ -9,6 +10,7 @@ function visibleFor(items: NavItem[], role: string): NavItem[] {
 
 export function Sidebar() {
   const user = useCurrentUser();
+  const { isNavItemVisible } = useCrmAccess();
   if (!user) return null;
 
   return (
@@ -25,7 +27,7 @@ export function Sidebar() {
 
       <nav className="flex-1 overflow-y-auto px-2 py-4">
         {NAVIGATION.map((group) => {
-          const items = visibleFor(group.items, user.role);
+          const items = visibleFor(group.items, user.role).filter(isNavItemVisible);
           if (items.length === 0) return null;
           return (
             <div key={group.label} className="mb-4">
