@@ -1455,7 +1455,7 @@ melhoria deve ter resultado medido
 
 ---
 
-# 21. Automações n8n
+# 21. Automações (n8n — fase posterior)
 
 ## Objetivo
 
