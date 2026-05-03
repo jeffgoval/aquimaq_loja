@@ -1,0 +1,2365 @@
+PRD completo considerando os 4 MVPs como escopo do sistema completo**. A lógica é: **construir o Aquimaq CRM como sistema completo de gestão operacional, gerencial e decisória**, mantendo o ERP legado como fonte oficial transacional/fiscal/financeira enquanto for necessário.
+
+Base conceitual: organizar a empresa pelo padrão novo, migrando por ondas, com centros de resultado, cadastro mestre, estoque endereçado, compras por regra, oficina formalizada, DRE gerencial, painel semanal e indicador de `% da operação no padrão novo`. 
+
+# PRD Completo — Aquimaq CRM
+
+## Controle, Rotina, Resultado e Melhoria
+
+Versão: 1.0
+Produto: Aquimaq CRM
+Stack recomendada: React + Vite + TypeScript + Supabase Cloud + n8n em VPS Hostinger
+ERP legado: permanece como sistema oficial enquanto necessário
+Escopo: sistema completo com os 4 MVPs incluídos desde o planejamento inicial
+
+---
+
+# 1. Resumo executivo
+
+O **Aquimaq CRM** será o sistema interno completo para reorganizar a operação da Aquimaq, controlar processos, auditar cadastros, estruturar estoque, compras, recebimento, oficina, tarefas, indicadores e painel gerencial econômico, financeiro e contábil.
+
+Apesar do nome CRM, nesta etapa o significado prático é:
+
+```txt
+C = Controle
+R = Rotina
+M = Melhoria
+```
+
+O sistema não nasce como CRM comercial de cliente. Ele nasce como uma plataforma para **organizar a casa, medir resultado e orientar decisão**.
+
+A tese central:
+
+```txt
+ERP legado registra a operação oficial.
+Aquimaq CRM organiza, audita, mede, cobra e melhora a operação.
+```
+
+O sistema completo deve responder diariamente:
+
+```txt
+o que está fora do padrão?
+quem precisa corrigir?
+qual é a prioridade?
+onde estamos perdendo margem?
+onde falta estoque?
+qual compra precisa ser feita?
+qual OS está parada?
+qual recebimento deu problema?
+qual centro de resultado está performando?
+tem caixa?
+o que está oficialmente registrado?
+qual ação precisa acontecer esta semana?
+```
+
+---
+
+# 2. Problema
+
+A empresa está operando com acúmulo de vícios operacionais:
+
+```txt
+cadastros ruins
+categorias confusas
+estoque incerto
+produtos sem localização
+baixa rastreabilidade
+compras reativas
+margem pouco confiável
+oficina informal
+recebimento sem padrão forte
+decisões sem indicadores
+responsabilidades difusas
+rotina de gestão fraca
+dependência de conhecimento informal
+```
+
+Trocar de ERP ou manter o ERP legado não resolve sozinho esse problema. O problema principal não é apenas sistema. É **processo, dado, governança, rotina e decisão**.
+
+O Aquimaq CRM será criado para atacar esse núcleo.
+
+---
+
+# 3. Objetivo do produto
+
+Criar um sistema completo para:
+
+```txt
+padronizar a operação
+auditar cadastro mestre
+controlar estoque gerencial
+endereçar produtos
+organizar compras
+padronizar recebimento
+formalizar oficina
+controlar tarefas e pendências
+medir indicadores operacionais
+medir indicadores econômicos
+medir indicadores financeiros
+importar indicadores contábeis
+conduzir rotina semanal de gestão
+acompanhar melhoria contínua
+medir % da operação no padrão novo
+```
+
+---
+
+# 4. Escopo estratégico
+
+## 4.1 Dentro do escopo
+
+```txt
+Painel da Casa
+Estrutura Operacional
+Cadastro Mestre
+Estoque Gerencial
+Compras
+Recebimento
+Oficina
+Tarefas e Pendências
+Indicadores Operacionais
+Painel Gerencial Econômico
+Painel Gerencial Financeiro
+Painel Gerencial Contábil
+Rotina Semanal
+Melhorias
+Automações n8n
+Integrações com ERP legado
+Importações por CSV/Excel/API/e-mail
+Permissões
+Auditoria
+Logs
+```
+
+## 4.2 Fora do escopo
+
+Mesmo no sistema completo, o Aquimaq CRM **não deve** substituir de imediato:
+
+```txt
+PDV
+caixa oficial
+emissão de nota
+NF-e/NFC-e
+SPED
+apuração fiscal oficial
+contabilidade oficial
+boletos oficiais
+conciliação bancária oficial
+obrigações legais
+```
+
+Essas funções continuam no ERP legado, contador ou sistema fiscal até decisão futura.
+
+---
+
+# 5. Divisão de responsabilidades
+
+## ERP legado
+
+Responsável por:
+
+```txt
+venda oficial
+caixa
+emissão fiscal
+cadastro fiscal de cliente
+estoque fiscal
+contas a pagar oficial
+contas a receber oficial
+boletos
+notas emitidas
+relatórios fiscais
+obrigações contábeis
+```
+
+## Aquimaq CRM
+
+Responsável por:
+
+```txt
+organização operacional
+cadastro mestre gerencial
+auditoria de produtos
+estoque gerencial
+localização física
+compras sugeridas
+recebimento gerencial
+oficina gerencial
+tarefas
+alertas
+indicadores
+painel econômico
+painel financeiro importado
+painel contábil importado
+reunião semanal
+plano de melhoria
+```
+
+Regra:
+
+```txt
+ERP é fonte oficial.
+Aquimaq CRM é fonte gerencial, operacional e decisória.
+```
+
+---
+
+# 6. Usuários e perfis
+
+## Perfis
+
+```txt
+Dono
+Gestor
+Administrador
+Cadastro
+Compras
+Estoque
+Recebimento
+Oficina
+Financeiro gerencial
+Consulta / BI
+```
+
+## Necessidades por perfil
+
+### Dono
+
+```txt
+ver situação geral da empresa
+ver margem
+ver caixa
+ver pendências críticas
+ver evolução da organização
+cobrar responsáveis
+decidir prioridades
+```
+
+### Gestor
+
+```txt
+acompanhar tarefas
+controlar rotina semanal
+ver problemas recorrentes
+aprovar compras
+aprovar exceções
+acompanhar indicadores
+```
+
+### Cadastro
+
+```txt
+corrigir produtos incompletos
+padronizar descrição
+classificar categoria
+validar marca, fornecedor, unidade e localização
+```
+
+### Compras
+
+```txt
+ver produtos abaixo do mínimo
+ver compras sugeridas
+comparar fornecedores
+acompanhar cotações
+registrar custo novo
+```
+
+### Estoque
+
+```txt
+endereçar produtos
+registrar saldo gerencial
+controlar divergência
+apoiar inventário
+```
+
+### Recebimento
+
+```txt
+conferir mercadoria
+registrar NF como referência
+validar quantidade, custo, unidade, lote e avaria
+liberar produto para venda gerencial
+```
+
+### Oficina
+
+```txt
+abrir OS gerencial
+registrar status
+controlar peças
+acompanhar OS parada
+registrar garantia
+```
+
+### Financeiro gerencial
+
+```txt
+importar contas a pagar
+importar contas a receber
+acompanhar inadimplência
+acompanhar fluxo projetado
+apoiar painel financeiro
+```
+
+---
+
+# 7. Princípios do sistema
+
+## 7.1 Tudo deve virar ação
+
+```txt
+Toda informação relevante deve poder gerar tarefa, alerta ou decisão.
+```
+
+## 7.2 Operação primeiro, cliente depois
+
+Nesta etapa, o foco não é CRM comercial. O foco é organizar a operação interna.
+
+## 7.3 Painel não é enfeite
+
+O painel deve mostrar problemas acionáveis.
+
+```txt
+Não basta mostrar número.
+Precisa mostrar risco, responsável e próxima ação.
+```
+
+## 7.4 Dados oficiais continuam no ERP
+
+O Aquimaq CRM pode importar, enriquecer e analisar dados, mas não deve conflitar com o ERP.
+
+## 7.5 Separar econômico, financeiro e contábil
+
+```txt
+Econômico = lucro e margem.
+Financeiro = dinheiro e prazo.
+Contábil = registro oficial.
+```
+
+---
+
+# 8. Estrutura macro do produto
+
+## Menu principal
+
+```txt
+Painel da Casa
+
+Operação
+  Cadastro Mestre
+  Estoque Gerencial
+  Compras
+  Recebimento
+  Oficina
+
+Gestão
+  Indicadores Operacionais
+  Painel Gerencial
+  Rotina Semanal
+  Tarefas
+  Pendências
+  Melhorias
+
+Configurações
+  Centros de Resultado
+  Centros de Custo
+  Categorias
+  Subcategorias
+  Marcas
+  Fornecedores
+  Unidades
+  Usuários
+  Permissões
+  Integrações
+```
+
+---
+
+# 9. Módulo 1 — Painel da Casa
+
+## Objetivo
+
+Ser a central diária de gestão operacional.
+
+## Perguntas respondidas
+
+```txt
+o que está crítico?
+o que está fora do padrão?
+quem está atrasado?
+qual área precisa agir?
+qual processo piorou?
+qual processo melhorou?
+qual prioridade da semana?
+```
+
+## Cards principais
+
+```txt
+% da operação no padrão novo
+Produtos no padrão novo
+Produtos incompletos
+Produtos sem localização
+Produtos sem preço
+Produtos sem fornecedor
+Produtos abaixo do mínimo
+Compras sugeridas
+Recebimentos pendentes
+Recebimentos com divergência
+OS abertas
+OS paradas
+Tarefas atrasadas
+Ações da semana
+```
+
+## Blocos
+
+### Alertas críticos
+
+```txt
+produto A abaixo do mínimo
+produto sem preço
+produto sem localização
+produto com custo alterado sem revisão
+OS parada há mais de X dias
+recebimento com divergência
+compra crítica sem aprovação
+```
+
+### Ações da semana
+
+```txt
+ações abertas
+ações atrasadas
+ações concluídas
+ações por responsável
+ações por área
+```
+
+### Evolução do padrão novo
+
+```txt
+Cadastro Mestre
+Estoque
+Compras
+Recebimento
+Oficina
+Rotina Semanal
+Painel Gerencial
+```
+
+## Critérios de aceite
+
+```txt
+gestor entende situação em até 30 segundos
+cada alerta pode gerar tarefa
+cada card permite ir ao detalhe
+painel separa crítico, atenção e saudável
+painel mostra evolução semanal
+```
+
+---
+
+# 10. Módulo 2 — Estrutura Operacional
+
+## Objetivo
+
+Criar a base organizacional da empresa.
+
+## Entidades
+
+```txt
+centros de resultado
+centros de custo gerenciais
+categorias
+subcategorias
+marcas
+fornecedores
+unidades
+responsáveis
+```
+
+## Centros de resultado iniciais
+
+```txt
+Loja / varejo balcão
+Máquinas e equipamentos
+Peças e reposição
+Oficina / assistência técnica
+Defensivos, foliares e produtos técnicos
+Fertilizantes e corretivos
+```
+
+## Centros de custo gerenciais
+
+```txt
+Compras
+Estoque
+Financeiro / cobrança
+Administrativo / RH
+Gestão / BI
+Tecnologia / sistema
+Logística / entrega
+```
+
+## Categorias iniciais
+
+```txt
+Defensivos
+Fertilizantes
+Foliares
+Corretivos
+Máquinas
+Peças
+Ferramentas
+EPIs
+Lubrificantes
+Irrigação
+Sacaria
+Produtos veterinários
+Sementes
+Oficina
+Serviços
+Frete / entrega
+Brindes / bonificações
+```
+
+## Critérios de aceite
+
+```txt
+produto deve estar vinculado a centro de resultado
+produto deve estar vinculado a categoria
+marcas e fornecedores devem ser reutilizáveis
+alteração crítica gera log
+```
+
+---
+
+# 11. Módulo 3 — Cadastro Mestre
+
+## Objetivo
+
+Criar uma base gerencial confiável de produtos.
+
+## Funcionalidades
+
+```txt
+listar produtos
+buscar produtos
+criar produto gerencial
+editar produto gerencial
+importar produto do ERP
+vincular código ERP
+vincular categoria
+vincular marca
+vincular fornecedor principal
+vincular fornecedores alternativos
+registrar unidade de compra
+registrar unidade de venda
+registrar conversão de unidade
+registrar custo gerencial
+registrar preço gerencial
+registrar margem mínima
+registrar margem desejada
+registrar desconto máximo
+registrar estoque mínimo
+registrar estoque máximo
+registrar localização padrão
+registrar curva ABC
+registrar status
+registrar responsável
+registrar data de revisão
+registrar pendências
+marcar produto no padrão novo
+```
+
+## Campos principais
+
+```txt
+código interno
+código ERP
+código de fábrica
+código de barras
+descrição padronizada
+categoria
+subcategoria
+marca
+fornecedor principal
+fornecedores alternativos
+unidade de compra
+unidade de venda
+conversão
+custo gerencial
+preço gerencial
+margem mínima
+margem desejada
+desconto máximo
+estoque mínimo
+estoque máximo
+localização física
+centro de resultado
+curva ABC
+status
+responsável pelo cadastro
+última revisão
+observações
+```
+
+## Status
+
+```txt
+Completo
+Incompleto
+Em revisão
+Sem categoria
+Sem marca
+Sem fornecedor
+Sem custo
+Sem preço
+Sem margem
+Sem localização
+Duplicado suspeito
+No padrão novo
+Fora do padrão novo
+```
+
+## Score de cadastro
+
+Score de 0 a 100.
+
+Regra inicial:
+
+```txt
+descrição padronizada: +10
+categoria: +10
+marca: +10
+fornecedor principal: +10
+unidade: +10
+custo: +10
+preço: +10
+margem mínima: +10
+estoque mínimo: +10
+localização: +10
+```
+
+## Exemplo
+
+```txt
+Produto: Óleo 2T XPTO
+Score: 70%
+
+Pendências:
+- sem localização
+- sem fornecedor alternativo
+- sem data de revisão
+
+Ação sugerida:
+definir localização e revisar fornecedor antes de marcar como padrão novo.
+```
+
+## Tela principal
+
+Cards:
+
+```txt
+Total de produtos
+Produtos completos
+Produtos incompletos
+Produtos no padrão novo
+Produtos sem preço
+Produtos sem localização
+Produtos sem fornecedor
+Produtos sem revisão
+```
+
+Tabela:
+
+```txt
+Código
+Produto
+Categoria
+Marca
+Centro de resultado
+Fornecedor
+Custo
+Preço
+Margem
+Estoque mínimo
+Localização
+Score
+Status
+Responsável
+Última revisão
+```
+
+## Regras
+
+```txt
+produto sem categoria não entra no padrão novo
+produto sem unidade não entra no padrão novo
+produto sem preço gera alerta
+produto sem localização gera pendência de estoque
+alteração de custo gera log
+alteração de preço gera log
+alteração de margem gera log
+produto A incompleto gera alerta crítico
+```
+
+---
+
+# 12. Módulo 4 — Estoque Gerencial
+
+## Objetivo
+
+Controlar a organização física e gerencial do estoque.
+
+## Observação
+
+O estoque fiscal/oficial continua no ERP legado. O Aquimaq CRM controla:
+
+```txt
+localização
+estoque piloto
+estoque mínimo
+estoque crítico
+saldo gerencial
+divergência
+inventário
+peças de oficina
+```
+
+## Funcionalidades
+
+```txt
+criar localizações
+consultar saldo gerencial
+registrar saldo inicial
+registrar ajuste com justificativa
+registrar transferência
+registrar tipo de estoque
+marcar produto crítico
+registrar inventário
+listar produtos sem localização
+listar produtos abaixo do mínimo
+listar produtos parados
+consultar histórico
+```
+
+## Tipos de estoque
+
+```txt
+Venda
+Oficina
+Avariado
+Garantia
+Reservado
+Em trânsito
+Brinde
+Consignado
+```
+
+## Localização
+
+```txt
+L01-C03-P02
+OF-ALM-P01
+DEP-ADU-BOX01
+```
+
+## Cards
+
+```txt
+Produtos endereçados
+Produtos sem localização
+Produtos abaixo do mínimo
+Produtos críticos
+Produtos parados
+Itens avariados
+Itens reservados
+Ajustes manuais
+```
+
+## Regras
+
+```txt
+produto no padrão novo deve ter localização
+ajuste exige justificativa
+movimentação registra responsável
+produto abaixo do mínimo gera alerta
+produto A abaixo do mínimo gera alerta crítico
+peça de oficina deve estar vinculada a OS
+```
+
+---
+
+# 13. Módulo 5 — Compras
+
+## Objetivo
+
+Transformar compras em rotina baseada em dados.
+
+## Funcionalidades
+
+```txt
+listar produtos abaixo do mínimo
+listar produtos A em risco
+listar produtos sem fornecedor
+criar sugestão de compra
+marcar prioridade
+vincular fornecedor
+registrar cotação
+comparar fornecedores
+registrar custo cotado
+registrar prazo de entrega
+registrar prazo de pagamento
+aprovar compra gerencial
+marcar pedido enviado no ERP
+acompanhar status
+vincular recebimento
+```
+
+## Status
+
+```txt
+Sugerida
+Em análise
+Em cotação
+Aguardando aprovação
+Aprovada
+Pedido enviado no ERP
+Aguardando recebimento
+Recebida parcialmente
+Recebida
+Cancelada
+```
+
+## Cards
+
+```txt
+Produtos abaixo do mínimo
+Produtos A em risco
+Compras sugeridas
+Cotações pendentes
+Pedidos em aberto
+Fornecedores com custo alterado
+Produtos sem fornecedor principal
+```
+
+## Regras
+
+```txt
+produto abaixo do mínimo pode gerar sugestão de compra
+produto A abaixo do mínimo gera prioridade alta
+compra aprovada exige responsável
+compra gerencial não substitui pedido oficial do ERP
+custo cotado diferente gera revisão de preço
+produto sem fornecedor gera pendência
+```
+
+---
+
+# 14. Módulo 6 — Recebimento
+
+## Objetivo
+
+Padronizar chegada, conferência, divergência, custo e liberação.
+
+## Funcionalidades
+
+```txt
+criar recebimento
+vincular fornecedor
+vincular compra gerencial
+registrar número de NF como referência
+registrar data de chegada
+registrar responsável
+adicionar itens
+conferir quantidade
+conferir unidade
+conferir custo
+registrar validade
+registrar lote
+registrar avaria
+registrar divergência
+definir localização
+liberar para venda gerencial
+gerar tarefa
+```
+
+## Checklist
+
+```txt
+Fornecedor conferido
+NF conferida
+Produto conferido
+Quantidade conferida
+Unidade conferida
+Custo conferido
+Validade/lote conferido
+Avaria verificada
+Divergência registrada
+Localização definida
+Produto liberado
+```
+
+## Status
+
+```txt
+Aguardando conferência
+Em conferência
+Com divergência
+Aguardando localização
+Liberado para venda
+Cancelado
+```
+
+## Cards
+
+```txt
+Recebimentos aguardando conferência
+Recebimentos em conferência
+Recebimentos com divergência
+Produtos aguardando localização
+Produtos aguardando liberação
+Custos alterados
+```
+
+## Regras
+
+```txt
+produto não conferido não entra no padrão novo
+divergência bloqueia liberação até resolução
+produto sem localização não é liberado no padrão novo
+custo diferente gera tarefa de revisão de preço
+divergência deve ter responsável
+```
+
+---
+
+# 15. Módulo 7 — Oficina
+
+## Objetivo
+
+Organizar OS, peças, status, garantia e pendências.
+
+## Funcionalidades
+
+```txt
+abrir OS gerencial
+registrar equipamento
+registrar defeito
+registrar diagnóstico
+registrar peças necessárias
+vincular peça ao estoque/oficina
+registrar técnico
+registrar status
+registrar garantia
+registrar fotos
+registrar pendência
+acompanhar OS parada
+gerar tarefa
+```
+
+## Status
+
+```txt
+Aberta
+Em diagnóstico
+Aguardando orçamento
+Aguardando aprovação
+Aguardando peça
+Em execução
+Finalizada
+Entregue
+Garantia
+Cancelada
+```
+
+## Cards
+
+```txt
+OS abertas
+OS aguardando diagnóstico
+OS aguardando aprovação
+OS aguardando peça
+OS paradas
+OS finalizadas
+Garantias abertas
+```
+
+## Regras
+
+```txt
+peça da oficina só sai vinculada a OS
+OS parada acima de X dias gera alerta
+OS aguardando peça pode gerar sugestão de compra
+OS finalizada deve ter técnico responsável
+garantia deve ter prazo ou observação
+```
+
+---
+
+# 16. Módulo 8 — Tarefas e Pendências
+
+## Objetivo
+
+Transformar problemas em ação.
+
+## Conceito
+
+Todo alerta ou pendência pode virar tarefa.
+
+Exemplos:
+
+```txt
+produto sem localização → tarefa para estoque
+produto sem preço → tarefa para gestor
+produto sem fornecedor → tarefa para compras
+OS parada → tarefa para oficina
+recebimento com divergência → tarefa para responsável
+compra sugerida → tarefa para compras
+custo alterado → tarefa de revisão de preço
+```
+
+## Campos
+
+```txt
+título
+descrição
+origem
+módulo
+responsável
+prazo
+prioridade
+status
+indicador relacionado
+data de criação
+data de conclusão
+observações
+```
+
+## Status
+
+```txt
+Aberta
+Em andamento
+Aguardando terceiro
+Concluída
+Atrasada
+Cancelada
+```
+
+## Prioridade
+
+```txt
+Crítica
+Alta
+Média
+Baixa
+```
+
+## Critérios
+
+```txt
+tarefa deve ter responsável
+tarefa deve ter prazo
+tarefa pode estar vinculada a produto, OS, compra ou recebimento
+alerta pode gerar tarefa
+reunião pode gerar tarefa
+```
+
+---
+
+# 17. Módulo 9 — Indicadores Operacionais
+
+## Objetivo
+
+Medir organização da casa.
+
+## Indicadores gerais
+
+```txt
+% da operação no padrão novo
+produtos migrados
+produtos pendentes
+tarefas abertas
+tarefas atrasadas
+problemas recorrentes
+ações concluídas na semana
+```
+
+## Cadastro
+
+```txt
+produtos completos
+produtos incompletos
+produtos sem categoria
+produtos sem marca
+produtos sem fornecedor
+produtos sem custo
+produtos sem preço
+produtos sem margem
+produtos sem localização
+produtos sem revisão
+```
+
+## Estoque
+
+```txt
+produtos abaixo do mínimo
+produtos A em ruptura
+produtos críticos
+produtos parados
+divergências
+ajustes manuais
+itens avariados
+itens sem localização
+```
+
+## Compras
+
+```txt
+compras sugeridas
+compras pendentes
+compras aguardando aprovação
+produtos sem fornecedor principal
+produtos sem fornecedor alternativo
+fornecedores com aumento de custo
+produtos A em risco
+```
+
+## Recebimento
+
+```txt
+recebimentos pendentes
+recebimentos com divergência
+produtos aguardando localização
+produtos aguardando liberação
+custos alterados
+tempo médio de conferência
+```
+
+## Oficina
+
+```txt
+OS abertas
+OS paradas
+OS aguardando peça
+OS aguardando aprovação
+tempo médio em aberto
+garantias abertas
+peças vinculadas à OS
+```
+
+---
+
+# 18. Módulo 10 — Painel Gerencial
+
+## Objetivo
+
+Separar claramente indicadores econômicos, financeiros e contábeis.
+
+Regra prática:
+
+```txt
+Econômico = lucro e margem.
+Financeiro = dinheiro e prazo.
+Contábil = registro oficial.
+```
+
+Ou:
+
+```txt
+Econômico mostra se valeu a pena.
+Financeiro mostra se tem caixa.
+Contábil mostra se está registrado corretamente.
+```
+
+## Estrutura
+
+```txt
+Painel Gerencial
+  Econômico
+  Financeiro
+  Contábil
+  Consolidado
+```
+
+---
+
+## 18.1 Aba Econômico
+
+### Pergunta principal
+
+```txt
+A operação valeu a pena?
+```
+
+### Indicadores
+
+```txt
+faturamento por centro de resultado
+margem por centro de resultado
+margem por produto
+margem por vendedor
+resultado por categoria
+DRE gerencial
+descontos concedidos
+produtos vendidos abaixo da margem mínima
+```
+
+### Fontes
+
+```txt
+ERP legado
+cadastro mestre
+custos gerenciais
+preços gerenciais
+centros de resultado
+categorias
+vendedores
+```
+
+### Regras
+
+```txt
+venda abaixo da margem mínima gera alerta
+desconto excessivo gera alerta
+centro de resultado com queda de margem aparece como atenção
+produto com alto faturamento e baixa margem aparece como risco
+```
+
+---
+
+## 18.2 Aba Financeiro
+
+### Pergunta principal
+
+```txt
+Tem caixa?
+```
+
+### Indicadores
+
+```txt
+contas a receber
+contas a pagar
+inadimplência
+fluxo de caixa projetado
+prazo médio de recebimento
+prazo médio de pagamento
+necessidade de capital de giro
+clientes em atraso
+```
+
+### Fontes
+
+```txt
+ERP legado
+relatórios financeiros
+planilhas do financeiro
+importação n8n
+```
+
+### Regras
+
+```txt
+financeiro é somente leitura/importado
+inadimplência alta gera alerta
+prazo médio de recebimento piorando gera alerta
+fluxo projetado negativo gera alerta crítico
+```
+
+---
+
+## 18.3 Aba Contábil
+
+### Pergunta principal
+
+```txt
+Está registrado corretamente?
+```
+
+### Indicadores
+
+```txt
+DRE contábil importada
+balanço
+impostos a pagar
+notas emitidas
+obrigações fiscais
+ativo/passivo
+patrimônio líquido
+```
+
+### Fontes
+
+```txt
+ERP legado
+contador
+sistema fiscal
+planilhas contábeis
+relatórios mensais
+```
+
+### Regras
+
+```txt
+contábil é importado/somente leitura
+não altera dados oficiais
+deve mostrar data da última atualização
+deve mostrar fonte do dado
+```
+
+---
+
+## 18.4 Consolidado
+
+Mostra visão executiva:
+
+```txt
+resultado econômico
+situação de caixa
+situação contábil
+alertas críticos
+ações recomendadas
+```
+
+Exemplo:
+
+```txt
+Margem caiu em Peças.
+Contas a receber vencidas subiram.
+Notas emitidas OK.
+Ação: revisar descontos e cobrar clientes vencidos prioritários.
+```
+
+---
+
+# 19. Módulo 11 — Rotina Semanal
+
+## Objetivo
+
+Transformar indicador em decisão e decisão em ação.
+
+## Antes da reunião
+
+O sistema prepara:
+
+```txt
+alertas críticos
+tarefas vencidas
+produtos críticos
+OS paradas
+compras pendentes
+recebimentos com divergência
+cadastros incompletos
+queda de margem
+alertas financeiros
+evolução do padrão novo
+```
+
+## Durante a reunião
+
+Registrar:
+
+```txt
+problema
+causa provável
+ação definida
+responsável
+prazo
+indicador relacionado
+prioridade
+observações
+```
+
+## Depois da reunião
+
+Acompanhar:
+
+```txt
+ações abertas
+ações atrasadas
+ações concluídas
+problemas repetidos
+responsáveis com pendência
+evolução semanal
+```
+
+## Pauta fixa
+
+```txt
+1. O que foi organizado esta semana?
+2. O que ainda está fora do padrão?
+3. Quais produtos estão críticos?
+4. Quais cadastros precisam revisão?
+5. Quais compras precisam decisão?
+6. Quais recebimentos deram problema?
+7. Quais OS estão paradas?
+8. Onde a margem caiu?
+9. Como está o caixa?
+10. Há algum alerta contábil/fiscal?
+11. Quais tarefas atrasaram?
+12. Qual problema se repetiu?
+13. Qual é a prioridade da próxima semana?
+```
+
+---
+
+# 20. Módulo 12 — Melhorias
+
+## Objetivo
+
+Criar ciclo de melhoria contínua.
+
+## Fluxo
+
+```txt
+identificar problema
+registrar causa provável
+definir ação
+atribuir responsável
+definir prazo
+executar
+verificar resultado
+padronizar melhoria
+```
+
+## Campos
+
+```txt
+problema
+área
+causa provável
+ação proposta
+responsável
+prazo
+status
+indicador afetado
+resultado esperado
+resultado obtido
+lição aprendida
+```
+
+## Critérios
+
+```txt
+problema recorrente pode virar melhoria
+tarefa concluída pode virar melhoria
+melhoria deve ter indicador relacionado
+melhoria deve ter resultado medido
+```
+
+---
+
+# 21. Automações n8n
+
+## Objetivo
+
+Automatizar importações, alertas e resumos.
+
+## Workflows obrigatórios
+
+### 1. Importação de produtos do ERP
+
+```txt
+buscar relatório/API
+normalizar dados
+atualizar Supabase
+identificar produtos novos
+identificar produtos incompletos
+gerar logs
+```
+
+### 2. Importação de estoque
+
+```txt
+buscar saldo do ERP
+comparar com estoque gerencial
+identificar divergências
+gerar alertas
+```
+
+### 3. Importação de vendas
+
+```txt
+buscar vendas
+vincular centro de resultado
+calcular faturamento
+calcular margem estimada
+identificar descontos
+```
+
+### 4. Importação financeira
+
+```txt
+contas a receber
+contas a pagar
+vencidos
+pagos
+previsão de caixa
+```
+
+### 5. Importação contábil
+
+```txt
+DRE contábil
+balanço
+impostos
+notas emitidas
+obrigações
+```
+
+### 6. Alerta de produto incompleto
+
+```txt
+produto com score abaixo do mínimo
+criar pendência
+notificar responsável
+```
+
+### 7. Alerta de estoque mínimo
+
+```txt
+produto abaixo do mínimo
+criar sugestão de compra
+```
+
+### 8. Alerta de custo alterado
+
+```txt
+custo novo diferente do custo anterior
+criar tarefa de revisão de preço
+```
+
+### 9. Alerta de OS parada
+
+```txt
+OS sem movimentação há X dias
+criar tarefa para oficina
+```
+
+### 10. Alerta financeiro
+
+```txt
+contas vencidas acima de limite
+fluxo projetado negativo
+inadimplência subindo
+```
+
+### 11. Resumo semanal
+
+```txt
+gerar resumo de operação
+gerar resumo econômico
+gerar resumo financeiro
+gerar resumo contábil
+enviar para gestão
+```
+
+---
+
+# 22. Stack recomendada
+
+## Frontend
+
+```txt
+React
+Vite
+TypeScript
+React Router
+TanStack Query
+TanStack Table
+React Hook Form
+Zod
+Tailwind CSS
+shadcn/ui
+Radix UI
+Lucide Icons
+Recharts
+```
+
+## Backend / banco
+
+```txt
+Supabase Cloud
+PostgreSQL
+Supabase Auth
+Row Level Security
+Supabase Storage
+Supabase Edge Functions
+```
+
+## Automação
+
+```txt
+n8n em VPS Hostinger
+```
+
+## BI auxiliar
+
+```txt
+Metabase
+```
+
+Uso:
+
+```txt
+Metabase para análises rápidas
+React para operação e painéis principais
+```
+
+---
+
+# 23. Arquitetura técnica
+
+```txt
+ERP legado
+  ↓
+API / CSV / Excel / relatório por e-mail
+  ↓
+n8n
+  ↓
+Supabase Cloud
+  ↓
+Aquimaq CRM
+  ↓
+Painéis, tarefas, alertas e reunião semanal
+```
+
+## Estrutura frontend
+
+```txt
+src/
+  app/
+    routes/
+    providers/
+    layouts/
+    config/
+
+  modules/
+    dashboard/
+    structure/
+    products/
+    inventory/
+    purchases/
+    receiving/
+    workshop/
+    tasks/
+    operational-indicators/
+    management-panel/
+    weekly-routine/
+    improvements/
+    integrations/
+    settings/
+    auth/
+
+  shared/
+    components/
+      ui/
+      forms/
+      tables/
+      layout/
+      feedback/
+      data-display/
+    hooks/
+    services/
+    lib/
+    utils/
+    types/
+    constants/
+
+  design-system/
+    tokens/
+    components/
+    patterns/
+```
+
+---
+
+# 24. Modelagem de banco
+
+## Auth e permissões
+
+```txt
+profiles
+roles
+permissions
+user_roles
+audit_logs
+```
+
+## Estrutura operacional
+
+```txt
+result_centers
+cost_centers
+categories
+subcategories
+brands
+suppliers
+units
+```
+
+## Cadastro mestre
+
+```txt
+products
+product_suppliers
+product_locations
+product_audit_issues
+product_score_history
+product_cost_history
+product_price_history
+product_equivalents
+product_complements
+```
+
+## Estoque
+
+```txt
+stock_locations
+stock_types
+stock_balances
+stock_movements
+inventory_counts
+inventory_count_items
+```
+
+## Compras
+
+```txt
+purchase_suggestions
+purchase_quotes
+purchase_quote_items
+purchase_orders_management
+purchase_order_items_management
+```
+
+## Recebimento
+
+```txt
+receipts
+receipt_items
+receipt_checklists
+receipt_divergences
+```
+
+## Oficina
+
+```txt
+work_orders
+work_order_items
+work_order_status_history
+work_order_photos
+work_order_warranties
+```
+
+## Tarefas e melhorias
+
+```txt
+tasks
+alerts
+weekly_meetings
+weekly_meeting_items
+improvement_actions
+management_indicators
+migration_progress
+```
+
+## Econômico
+
+```txt
+management_revenue
+management_margin
+management_dre
+sales_margin_analysis
+discount_analysis
+result_center_results
+category_results
+```
+
+## Financeiro importado
+
+```txt
+erp_accounts_receivable
+erp_accounts_payable
+erp_cash_flow_projection
+financial_kpi_snapshots
+```
+
+## Contábil importado
+
+```txt
+accounting_dre_imports
+accounting_balance_imports
+tax_obligations
+issued_invoices
+accounting_kpi_snapshots
+```
+
+## Integrações
+
+```txt
+import_jobs
+import_files
+import_logs
+data_sources
+erp_products_raw
+erp_stock_raw
+erp_sales_raw
+erp_financial_raw
+erp_accounting_raw
+```
+
+---
+
+# 25. Design system
+
+## Direção visual
+
+Sistema moderno, sóbrio, operacional e executivo.
+
+Referências:
+
+```txt
+Linear
+Stripe Dashboard
+Attio
+Ramp
+Mercury
+Vercel Dashboard
+Retool moderno
+Notion Business
+```
+
+Evitar:
+
+```txt
+ERP antigo
+template genérico
+gradiente exagerado
+cards coloridos demais
+visual infantil
+excesso de sombra
+layout poluído
+```
+
+## Tema
+
+```txt
+Aquimaq Slate
+```
+
+## Tokens
+
+```txt
+Fonte: Inter, Geist ou IBM Plex Sans
+
+Background: #F8FAFC
+Surface: #FFFFFF
+Surface muted: #F1F5F9
+
+Text primary: #0F172A
+Text secondary: #475569
+Text muted: #64748B
+Text disabled: #94A3B8
+
+Border: #E2E8F0
+Border strong: #CBD5E1
+
+Primary: #2563EB
+Primary hover: #1D4ED8
+Primary soft: #DBEAFE
+
+Success: #16A34A
+Success soft: #DCFCE7
+
+Warning: #D97706
+Warning soft: #FEF3C7
+
+Danger: #DC2626
+Danger soft: #FEE2E2
+
+Info: #0891B2
+Info soft: #CFFAFE
+```
+
+## Componentes
+
+```txt
+Button
+Input
+Textarea
+Select
+Combobox
+Checkbox
+Switch
+DatePicker
+Badge
+StatusBadge
+PriorityBadge
+MetricCard
+DataTable
+FilterBar
+SearchInput
+PageHeader
+SectionCard
+Drawer
+Modal
+ConfirmDialog
+EmptyState
+LoadingState
+AlertCard
+TaskCard
+ChecklistCard
+AuditTimeline
+ProgressCard
+KpiCard
+TrendIndicator
+```
+
+---
+
+# 26. MVPs consolidados
+
+Aqui os 4 MVPs entram como entregas sequenciais rápidas do **sistema completo**, não como possibilidades opcionais.
+
+---
+
+## MVP 1 — Organizar a Casa
+
+### Objetivo
+
+Criar a fundação operacional.
+
+### Escopo
+
+```txt
+login
+usuários
+perfis básicos
+layout principal
+Painel da Casa
+centros de resultado
+categorias
+subcategorias
+marcas
+fornecedores
+unidades
+cadastro mestre de produtos
+score de cadastro
+pendências do produto
+localizações físicas
+estoque gerencial simples
+estoque mínimo
+tarefas
+responsáveis
+prazos
+prioridades
+indicadores básicos
+% operação no padrão novo
+rotina semanal básica
+```
+
+### Critérios de aceite
+
+```txt
+cadastrar 30 produtos piloto
+classificar por centro de resultado
+definir categoria, marca e fornecedor
+registrar custo, preço, margem e mínimo
+definir localização física
+calcular score de cadastro
+listar produtos incompletos
+listar produtos sem localização
+listar produtos abaixo do mínimo
+criar tarefas a partir de pendências
+atribuir responsável e prazo
+visualizar Painel da Casa
+criar reunião semanal
+medir % operação no padrão novo
+```
+
+---
+
+## MVP 2 — Processo Operacional
+
+### Objetivo
+
+Adicionar compras, recebimento e oficina.
+
+### Escopo
+
+```txt
+compras sugeridas
+cotações simples
+status de compra
+checklist de recebimento
+divergências
+custo alterado
+OS gerencial
+status de OS
+peças vinculadas à OS
+painel de oficina
+alertas automáticos básicos
+resumo semanal operacional
+```
+
+### Critérios de aceite
+
+```txt
+produto abaixo do mínimo gera compra sugerida
+compra pode ser acompanhada por status
+recebimento tem checklist
+divergência gera tarefa
+custo alterado gera revisão de preço
+OS pode ser aberta e acompanhada
+OS parada gera alerta
+peça pode ser vinculada à OS
+```
+
+---
+
+## MVP 3 — Painel Gerencial
+
+### Objetivo
+
+Criar visão econômica, financeira e contábil.
+
+### Escopo
+
+```txt
+aba econômica
+aba financeira
+aba contábil
+indicadores por centro de resultado
+margem por produto
+margem por vendedor
+descontos concedidos
+DRE gerencial
+contas a receber importadas
+contas a pagar importadas
+inadimplência
+fluxo de caixa projetado
+DRE contábil importada
+notas emitidas
+impostos a pagar
+obrigações fiscais
+```
+
+### Critérios de aceite
+
+```txt
+painel separa econômico, financeiro e contábil
+econômico mostra margem e resultado
+financeiro mostra caixa e prazos
+contábil mostra registros importados
+cada dado mostra fonte e data de atualização
+indicador crítico pode gerar tarefa
+```
+
+---
+
+## MVP 4 — Gestão Avançada e Automação
+
+### Objetivo
+
+Automatizar importações, alertas e rotina de melhoria.
+
+### Escopo
+
+```txt
+n8n integrado
+importações agendadas
+logs de importação
+alertas automáticos
+resumo semanal completo
+melhorias
+ações recorrentes
+indicadores históricos
+evolução por semana
+Metabase opcional
+permissões refinadas
+auditoria avançada
+```
+
+### Critérios de aceite
+
+```txt
+n8n importa dados do ERP
+falhas de importação ficam registradas
+resumo semanal é gerado automaticamente
+alertas criam tarefas
+melhorias têm indicador relacionado
+histórico semanal fica disponível
+gestão acompanha evolução por área
+```
+
+---
+
+# 27. Roadmap agressivo recomendado
+
+## Semana 1 — Fundação e estrutura
+
+```txt
+projeto React + Vite
+Supabase
+Auth
+layout
+design system
+centros de resultado
+categorias
+marcas
+fornecedores
+unidades
+```
+
+## Semana 2 — Cadastro mestre
+
+```txt
+produtos
+score de cadastro
+pendências
+filtros
+status
+histórico
+```
+
+## Semana 3 — Estoque e tarefas
+
+```txt
+localização
+estoque mínimo
+produtos críticos
+tarefas
+responsáveis
+Painel da Casa inicial
+```
+
+## Semana 4 — Rotina semanal
+
+```txt
+reunião semanal
+ações
+indicadores operacionais
+% padrão novo
+```
+
+## Semana 5 — Compras
+
+```txt
+compras sugeridas
+cotações
+status
+alertas de mínimo
+```
+
+## Semana 6 — Recebimento
+
+```txt
+checklist
+divergências
+custo alterado
+liberação
+```
+
+## Semana 7 — Oficina
+
+```txt
+OS
+status
+peças
+garantia
+OS parada
+```
+
+## Semana 8 — Painel econômico
+
+```txt
+faturamento
+margem
+centros de resultado
+produtos abaixo da margem
+descontos
+DRE gerencial simples
+```
+
+## Semana 9 — Painel financeiro
+
+```txt
+contas a receber
+contas a pagar
+inadimplência
+fluxo projetado
+prazos médios
+```
+
+## Semana 10 — Painel contábil
+
+```txt
+DRE contábil importada
+notas
+impostos
+obrigações
+balanço importado, se disponível
+```
+
+## Semana 11 — n8n
+
+```txt
+importações
+alertas
+resumo semanal
+logs
+```
+
+## Semana 12 — Ajustes e operação assistida
+
+```txt
+treinamento
+correção de fluxo
+melhorias
+permissões
+relatórios
+```
+
+---
+
+# 28. Primeira entrega de código
+
+## Entrega 1 obrigatória
+
+```txt
+React + Vite + TypeScript
+Tailwind
+shadcn/ui
+Supabase client
+Supabase Auth
+rotas públicas e privadas
+layout com sidebar
+tema Aquimaq Slate
+componentes base
+tabelas iniciais
+RLS básica
+CRUD de centros de resultado
+CRUD de categorias
+CRUD de marcas
+CRUD de fornecedores
+CRUD de unidades
+CRUD inicial de produtos
+```
+
+## Resultado
+
+A empresa já começa a cadastrar e auditar os produtos piloto.
+
+---
+
+# 29. Métrica principal
+
+```txt
+% da operação no padrão novo
+```
+
+## Cálculo inicial
+
+```txt
+produtos piloto completos / produtos piloto definidos
+```
+
+## Cálculo composto futuro
+
+```txt
+Cadastro Mestre: 25%
+Estoque: 20%
+Compras: 15%
+Recebimento: 15%
+Oficina: 15%
+Rotina Semanal: 10%
+```
+
+Exemplo:
+
+```txt
+Cadastro Mestre: 70%
+Estoque: 45%
+Compras: 30%
+Recebimento: 25%
+Oficina: 40%
+Rotina Semanal: 80%
+
+Operação no padrão novo: 48%
+```
+
+---
+
+# 30. Regras finais de produto
+
+```txt
+1. Não duplicar o ERP quando não for necessário.
+2. Não criar tela que não gere ação.
+3. Não esconder problema operacional.
+4. Não misturar lucro, caixa e contabilidade.
+5. Não depender de cadastro perfeito para começar.
+6. Começar pelo piloto, mas construir com arquitetura de sistema completo.
+7. Todo alerta precisa ter responsável, prazo e prioridade.
+8. Toda reunião precisa gerar ações.
+9. Toda melhoria precisa ter indicador.
+10. Toda importação precisa ter fonte, data e log.
+```
+
+---
+
+# 31. Posicionamento final
+
+```txt
+Aquimaq CRM é o sistema completo para organizar a casa, controlar a rotina, medir resultado e transformar decisão em ação.
+```
+
+Versão direta:
+
+```txt
+ERP registra.
+Aquimaq CRM governa.
+```
+
+Versão operacional:
+
+```txt
+O sistema mostra o que está errado, quem precisa corrigir, qual é a prioridade, qual é o impacto e quanto a empresa já evoluiu.
+```
+
+Versão estratégica:
+
+```txt
+Primeiro arrumar a casa.
+Depois acelerar o comercial.
+```
+
+---
+
+# 32. Decisão de escopo final
+
+O sistema completo deve nascer cobrindo os 4 blocos:
+
+```txt
+MVP 1: Organização da casa
+MVP 2: Processo operacional
+MVP 3: Painel gerencial
+MVP 4: Automação e melhoria contínua
+```
+
+Não tratar isso como “futuro indefinido”. Tratar como **plano fechado de execução**, com prioridade para entregar rapidamente o mínimo funcional de cada bloco.
+
+abordagem correta não é esperar perfeição. É:
+
+```txt
+implantar rápido
+medir rápido
+corrigir rápido
+expandir com controle
+```

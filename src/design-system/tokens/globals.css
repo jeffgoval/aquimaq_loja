@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Aquimaq Slate — single source of truth for color tokens.
+   PRD §25.3: sober, executive, operational. */
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 210 40% 98%;        /* #F8FAFC */
+    --surface: 0 0% 100%;              /* #FFFFFF */
+    --surface-muted: 210 40% 96%;     /* #F1F5F9 */
+
+    /* Text */
+    --foreground: 222 47% 11%;        /* #0F172A */
+    --muted: 215 20% 65%;              /* #94A3B8 */
+    --muted-foreground: 215 16% 47%;  /* #64748B */
+
+    /* Borders / focus */
+    --border: 214 32% 91%;             /* #E2E8F0 */
+    --border-strong: 213 27% 84%;     /* #CBD5E1 */
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+
+    /* Primary (blue) */
+    --primary: 221 83% 53%;            /* #2563EB */
+    --primary-hover: 224 76% 48%;     /* #1D4ED8 */
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 214 95% 93%;      /* #DBEAFE */
+
+    /* Status */
+    --success: 142 71% 36%;            /* #16A34A */
+    --success-soft: 141 79% 87%;      /* #DCFCE7 */
+    --success-foreground: 0 0% 100%;
+
+    --warning: 32 95% 44%;             /* #D97706 */
+    --warning-soft: 48 96% 89%;       /* #FEF3C7 */
+    --warning-foreground: 0 0% 100%;
+
+    --danger: 0 72% 51%;               /* #DC2626 */
+    --danger-soft: 0 93% 94%;          /* #FEE2E2 */
+    --danger-foreground: 0 0% 100%;
+
+    --info: 192 91% 36%;               /* #0891B2 */
+    --info-soft: 187 92% 90%;          /* #CFFAFE */
+    --info-foreground: 0 0% 100%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+}
