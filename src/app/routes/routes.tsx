@@ -25,6 +25,8 @@ import { WeeklyRoutineAccess } from '@modules/weekly-routine/routes/WeeklyRoutin
 import { WeeklyRoutinePage } from '@modules/weekly-routine/routes/WeeklyRoutinePage';
 import { ImprovementsAccess } from '@modules/improvements/routes/ImprovementsAccess';
 import { ImprovementsPage } from '@modules/improvements/routes/ImprovementsPage';
+import { ManagementPanelAccess } from '@modules/management-panel/routes/ManagementPanelAccess';
+import { ManagementPanelPage } from '@modules/management-panel/routes/ManagementPanelPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -86,6 +88,10 @@ export function AppRoutes() {
 
         <Route path="improvements" element={<ImprovementsAccess />}>
           <Route index element={<ImprovementsPage />} />
+        </Route>
+
+        <Route path="management-panel" element={<ManagementPanelAccess />}>
+          <Route index element={<ManagementPanelPage />} />
         </Route>
       </Route>
 

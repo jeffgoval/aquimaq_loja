@@ -665,6 +665,118 @@ export type Database = {
           },
         ]
       }
+      management_sales_import_batches: {
+        Row: {
+          committed_at: string | null
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          id: string
+          row_count: number
+          source_filename: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          committed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          row_count?: number
+          source_filename?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          committed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          row_count?: number
+          source_filename?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'management_sales_import_batches_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      management_sales_import_rows: {
+        Row: {
+          batch_id: string
+          channel: string | null
+          created_at: string
+          customer_code: string | null
+          discount: number | null
+          id: string
+          is_cancelled: boolean
+          line_total: number | null
+          payment_type: string | null
+          product_code: string
+          quantity: number
+          row_no: number
+          sale_code: string
+          sale_date: string
+          seller_name: string | null
+          unit_cost: number | null
+          unit_price: number
+        }
+        Insert: {
+          batch_id: string
+          channel?: string | null
+          created_at?: string
+          customer_code?: string | null
+          discount?: number | null
+          id?: string
+          is_cancelled?: boolean
+          line_total?: number | null
+          payment_type?: string | null
+          product_code: string
+          quantity: number
+          row_no: number
+          sale_code: string
+          sale_date: string
+          seller_name?: string | null
+          unit_cost?: number | null
+          unit_price: number
+        }
+        Update: {
+          batch_id?: string
+          channel?: string | null
+          created_at?: string
+          customer_code?: string | null
+          discount?: number | null
+          id?: string
+          is_cancelled?: boolean
+          line_total?: number | null
+          payment_type?: string | null
+          product_code?: string
+          quantity?: number
+          row_no?: number
+          sale_code?: string
+          sale_date?: string
+          seller_name?: string | null
+          unit_cost?: number | null
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'management_sales_import_rows_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'management_sales_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       management_products: {
         Row: {
           abc_class: string | null
@@ -2485,6 +2597,7 @@ export type Database = {
     Functions: {
       can_approve_purchases: { Args: never; Returns: boolean }
       can_manage_inventory: { Args: never; Returns: boolean }
+      can_manage_management_panel: { Args: never; Returns: boolean }
       can_manage_product_catalog: { Args: never; Returns: boolean }
       can_manage_purchases: { Args: never; Returns: boolean }
       can_manage_receiving: { Args: never; Returns: boolean }
@@ -2533,6 +2646,28 @@ export type Database = {
       }
       workshop_sync_stalled_os_alerts: { Args: { p_days?: number }; Returns: number }
       is_current_user_admin: { Args: never; Returns: boolean }
+      management_commit_sales_import: { Args: { p_batch_id: string }; Returns: Json }
+      management_dre_basic: {
+        Args: { p_end: string; p_result_center_id?: string | null; p_start: string }
+        Returns: {
+          amount: number
+          code: string
+          label: string
+          sort_order: number
+        }[]
+      }
+      management_margin_breakdown: {
+        Args: { p_dimension: string; p_end: string; p_start: string }
+        Returns: {
+          dimension_key: string
+          dimension_label: string
+          line_count: number
+          margin_value: number
+          qty: number
+          revenue: number
+        }[]
+      }
+      management_sync_margin_alerts: { Args: { p_end: string; p_start: string }; Returns: number }
       record_gestao_import_snapshot: {
         Args: { p_job_id: string }
         Returns: undefined
