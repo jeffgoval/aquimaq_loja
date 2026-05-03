@@ -615,6 +615,56 @@ export type Database = {
           },
         ]
       }
+      improvements: {
+        Row: {
+          act_notes: string | null
+          check_notes: string | null
+          created_at: string
+          do_notes: string | null
+          id: string
+          owner_id: string
+          plan_notes: string | null
+          problem_statement: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          act_notes?: string | null
+          check_notes?: string | null
+          created_at?: string
+          do_notes?: string | null
+          id?: string
+          owner_id: string
+          plan_notes?: string | null
+          problem_statement?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          act_notes?: string | null
+          check_notes?: string | null
+          created_at?: string
+          do_notes?: string | null
+          id?: string
+          owner_id?: string
+          plan_notes?: string | null
+          problem_statement?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'improvements_owner_id_fkey'
+            columns: ['owner_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       management_products: {
         Row: {
           abc_class: string | null
@@ -2237,6 +2287,7 @@ export type Database = {
           priority: string
           related_alert_id: string | null
           related_indicator: string | null
+          related_task_id: string | null
           responsible_user_id: string
           status: string
           title: string
@@ -2251,6 +2302,7 @@ export type Database = {
           priority: string
           related_alert_id?: string | null
           related_indicator?: string | null
+          related_task_id?: string | null
           responsible_user_id: string
           status?: string
           title: string
@@ -2265,6 +2317,7 @@ export type Database = {
           priority?: string
           related_alert_id?: string | null
           related_indicator?: string | null
+          related_task_id?: string | null
           responsible_user_id?: string
           status?: string
           title?: string
@@ -2284,7 +2337,108 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: 'weekly_actions_related_task_id_fkey'
+            columns: ['related_task_id']
+            isOneToOne: false
+            referencedRelation: 'tasks'
+            referencedColumns: ['id']
+          },
         ]
+      }
+      weekly_routine_logs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          notes: string | null
+          related_task_id: string | null
+          template_id: string | null
+          title: string
+          updated_at: string
+          week_start_monday: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          related_task_id?: string | null
+          template_id?: string | null
+          title: string
+          updated_at?: string
+          week_start_monday: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          related_task_id?: string | null
+          template_id?: string | null
+          title?: string
+          updated_at?: string
+          week_start_monday?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'weekly_routine_logs_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'weekly_routine_logs_related_task_id_fkey'
+            columns: ['related_task_id']
+            isOneToOne: false
+            referencedRelation: 'tasks'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'weekly_routine_logs_template_id_fkey'
+            columns: ['template_id']
+            isOneToOne: false
+            referencedRelation: 'weekly_routine_templates'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      weekly_routine_templates: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          sort_order: number
+          title: string
+          updated_at: string
+          weekday: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          title: string
+          updated_at?: string
+          weekday: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          weekday?: number
+        }
+        Relationships: []
       }
       weekly_meetings: {
         Row: {
@@ -2334,6 +2488,7 @@ export type Database = {
       can_manage_product_catalog: { Args: never; Returns: boolean }
       can_manage_purchases: { Args: never; Returns: boolean }
       can_manage_receiving: { Args: never; Returns: boolean }
+      can_manage_weekly_and_improvements: { Args: never; Returns: boolean }
       can_manage_workshop: { Args: never; Returns: boolean }
       dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */

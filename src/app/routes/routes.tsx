@@ -19,6 +19,12 @@ import { ReceivingAccess } from '@modules/receiving/routes/ReceivingAccess';
 import { ReceivingPage } from '@modules/receiving/routes/ReceivingPage';
 import { WorkshopAccess } from '@modules/workshop/routes/WorkshopAccess';
 import { WorkshopPage } from '@modules/workshop/routes/WorkshopPage';
+import { OperationalIndicatorsAccess } from '@modules/operational-indicators/routes/OperationalIndicatorsAccess';
+import { OperationalIndicatorsPage } from '@modules/operational-indicators/routes/OperationalIndicatorsPage';
+import { WeeklyRoutineAccess } from '@modules/weekly-routine/routes/WeeklyRoutineAccess';
+import { WeeklyRoutinePage } from '@modules/weekly-routine/routes/WeeklyRoutinePage';
+import { ImprovementsAccess } from '@modules/improvements/routes/ImprovementsAccess';
+import { ImprovementsPage } from '@modules/improvements/routes/ImprovementsPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -69,6 +75,18 @@ export function AppRoutes() {
         </Route>
 
         <Route path="tasks" element={<TasksPage />} />
+
+        <Route path="indicators" element={<OperationalIndicatorsAccess />}>
+          <Route index element={<OperationalIndicatorsPage />} />
+        </Route>
+
+        <Route path="weekly-routine" element={<WeeklyRoutineAccess />}>
+          <Route index element={<WeeklyRoutinePage />} />
+        </Route>
+
+        <Route path="improvements" element={<ImprovementsAccess />}>
+          <Route index element={<ImprovementsPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
