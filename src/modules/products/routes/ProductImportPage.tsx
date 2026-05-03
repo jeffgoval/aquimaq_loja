@@ -14,8 +14,7 @@ import {
   listResultCenters,
   type ProductInsert,
 } from '../services/productsApi';
-
-type CsvRow = Record<string, string>;
+import { parseExcelFirstSheet, type ImportRow } from '../lib/parseImportSpreadsheet';
 
 export const PRODUCT_IMPORT_FIELD_KEYS = [
   { key: 'internal_code', label: 'Código interno *' },
@@ -53,7 +52,7 @@ function parseNum(v: string | undefined): number | null {
 export function ProductImportPage() {
   const qc = useQueryClient();
   const [headers, setHeaders] = useState<string[]>([]);
-  const [rows, setRows] = useState<CsvRow[]>([]);
+  const [rows, setRows] = useState<ImportRow[]>([]);
   const [mapping, setMapping] = useState<Partial<Record<ProductImportFieldKey, string>>>({});
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
@@ -89,7 +88,7 @@ export function ProductImportPage() {
       const errors: string[] = [];
       const inserts: ProductInsert[] = [];
 
-      const col = (r: CsvRow, key: ProductImportFieldKey) => {
+      const col = (r: ImportRow, key: ProductImportFieldKey) => {
         const h = mapping[key];
         return h ? (r[h] ?? '').trim() : '';
       };
@@ -174,9 +173,43 @@ export function ProductImportPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const applyParsed = (h: string[], dataRows: ImportRow[], rowCountLabel: string) => {
+    if (!h.length) {
+      toast.error('Sem cabeçalhos na primeira linha.');
+      return;
+    }
+    setHeaders(h);
+    setRows(dataRows);
+    const auto: Partial<Record<ProductImportFieldKey, string>> = {};
+    for (const def of PRODUCT_IMPORT_FIELD_KEYS) {
+      const head = def.label.split('(')[0];
+      const labelKey = (head ?? def.label).trim().toLowerCase();
+      const match = h.find((x) => x.trim().toLowerCase() === labelKey);
+      if (match) auto[def.key] = match;
+    }
+    setMapping(auto);
+    setStep(2);
+    toast.success(`${rowCountLabel} linha(s) de dados lidas.`);
+  };
+
   const onFile = (file: File | null) => {
     if (!file) return;
-    Papa.parse<CsvRow>(file, {
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+
+    if (ext === 'xlsx' || ext === 'xls' || ext === 'xlsm') {
+      void (async () => {
+        try {
+          const buf = await file.arrayBuffer();
+          const { headers: h, rows: dataRows } = parseExcelFirstSheet(buf);
+          applyParsed(h, dataRows, String(dataRows.length));
+        } catch (e) {
+          toast.error(e instanceof Error ? e.message : 'Erro ao ler Excel.');
+        }
+      })();
+      return;
+    }
+
+    Papa.parse<ImportRow>(file, {
       header: true,
       skipEmptyLines: true,
       complete: (res) => {
@@ -185,18 +218,10 @@ export function ProductImportPage() {
           toast.error('CSV sem cabeçalho válido.');
           return;
         }
-        setHeaders(h);
-        setRows((res.data as CsvRow[]).filter((row) => Object.values(row).some((v) => String(v).trim() !== '')));
-        const auto: Partial<Record<ProductImportFieldKey, string>> = {};
-        for (const def of PRODUCT_IMPORT_FIELD_KEYS) {
-          const head = def.label.split('(')[0];
-          const labelKey = (head ?? def.label).trim().toLowerCase();
-          const match = h.find((x) => x.trim().toLowerCase() === labelKey);
-          if (match) auto[def.key] = match;
-        }
-        setMapping(auto);
-        setStep(2);
-        toast.success(`${res.data.length} linha(s) lidas.`);
+        const dataRows = (res.data as ImportRow[]).filter((row) =>
+          Object.values(row).some((v) => String(v).trim() !== ''),
+        );
+        applyParsed(h, dataRows, String(res.data.length));
       },
       error: (err) => toast.error(err.message),
     });
@@ -213,10 +238,10 @@ export function ProductImportPage() {
         </Link>
       </Button>
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Importar produtos (CSV)</h1>
+        <h1 className="text-xl font-semibold tracking-tight">Importar produtos</h1>
         <p className="text-sm text-muted-foreground">
-          Exporte do ERP com cabeçalho na primeira linha. Mapeie colunas → campos; categorias/marcas/unidades devem existir na
-          estrutura.
+          Podes usar Excel (.xlsx, .xls, .xlsm) ou CSV. No Excel só a primeira folha é lida; a primeira linha tem de ser o cabeçalho (nomes das colunas).
+          Depois mapeia cada coluna ao campo do CRM. Categorias, marcas, fornecedores e unidades têm de existir em Estrutura com o mesmo nome/código.
         </p>
       </div>
 
@@ -224,10 +249,17 @@ export function ProductImportPage() {
         <Card>
           <CardHeader>
             <CardTitle>1. Arquivo</CardTitle>
-            <CardDescription>UTF-8, separador vírgula ou ponto-e-vírgula (detectado automaticamente).</CardDescription>
+            <CardDescription>
+              Excel: exportação “normal” do ERP (ex.: ficheiro em <code className="text-xs">docs/</code> no repositório). CSV:
+              UTF-8; vírgula ou ponto-e-vírgula (deteção automática).
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Input type="file" accept=".csv,text/csv" onChange={(e) => onFile(e.target.files?.[0] ?? null)} />
+            <Input
+              type="file"
+              accept=".csv,.xlsx,.xls,.xlsm,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+              onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+            />
           </CardContent>
         </Card>
       ) : null}
@@ -236,7 +268,7 @@ export function ProductImportPage() {
         <Card>
           <CardHeader>
             <CardTitle>2. Mapeamento de colunas</CardTitle>
-            <CardDescription>Cada campo aponta para um cabeçalho do CSV.</CardDescription>
+            <CardDescription>Cada campo aponta para uma coluna do ficheiro (cabeçalho da primeira linha).</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {PRODUCT_IMPORT_FIELD_KEYS.map((f) => (

@@ -917,6 +917,52 @@ export type Database = {
           },
         ]
       }
+      product_stock_balances: {
+        Row: {
+          product_id: string
+          quantity: number
+          stock_location_id: string
+          stock_type_id: string
+          updated_at: string
+        }
+        Insert: {
+          product_id: string
+          quantity?: number
+          stock_location_id: string
+          stock_type_id: string
+          updated_at?: string
+        }
+        Update: {
+          product_id?: string
+          quantity?: number
+          stock_location_id?: string
+          stock_type_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'product_stock_balances_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_stock_balances_stock_location_id_fkey'
+            columns: ['stock_location_id']
+            isOneToOne: false
+            referencedRelation: 'stock_locations'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_stock_balances_stock_type_id_fkey'
+            columns: ['stock_type_id']
+            isOneToOne: false
+            referencedRelation: 'stock_types'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       products: {
         Row: {
           abc_class: string | null
@@ -1223,6 +1269,203 @@ export type Database = {
         }
         Relationships: []
       }
+      stock_locations: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      stock_movements: {
+        Row: {
+          balance_after: number
+          created_at: string
+          created_by: string | null
+          delta_qty: number
+          id: string
+          justification: string
+          movement_kind: string
+          product_id: string
+          stock_location_id: string
+          stock_type_id: string
+        }
+        Insert: {
+          balance_after: number
+          created_at?: string
+          created_by?: string | null
+          delta_qty: number
+          id?: string
+          justification: string
+          movement_kind?: string
+          product_id: string
+          stock_location_id: string
+          stock_type_id: string
+        }
+        Update: {
+          balance_after?: number
+          created_at?: string
+          created_by?: string | null
+          delta_qty?: number
+          id?: string
+          justification?: string
+          movement_kind?: string
+          product_id?: string
+          stock_location_id?: string
+          stock_type_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'stock_movements_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'stock_movements_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'stock_movements_stock_location_id_fkey'
+            columns: ['stock_location_id']
+            isOneToOne: false
+            referencedRelation: 'stock_locations'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'stock_movements_stock_type_id_fkey'
+            columns: ['stock_type_id']
+            isOneToOne: false
+            referencedRelation: 'stock_types'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      stock_types: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_date: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          module: string | null
+          notes: string | null
+          origin: string
+          priority: string
+          responsible_user_id: string
+          source_key: string | null
+          status: string
+          title: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          module?: string | null
+          notes?: string | null
+          origin?: string
+          priority?: string
+          responsible_user_id: string
+          source_key?: string | null
+          status?: string
+          title: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          module?: string | null
+          notes?: string | null
+          origin?: string
+          priority?: string
+          responsible_user_id?: string
+          source_key?: string | null
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tasks_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'tasks_responsible_user_id_fkey'
+            columns: ['responsible_user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       units: {
         Row: {
           code: string
@@ -1418,7 +1661,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_manage_inventory: { Args: never; Returns: boolean }
       can_manage_master_products: { Args: never; Returns: boolean }
+      dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */
       eval_product_registration: {
         Args: { p: Record<string, unknown> }
@@ -1449,6 +1694,17 @@ export type Database = {
       record_gestao_import_snapshot: {
         Args: { p_job_id: string }
         Returns: undefined
+      }
+      stock_apply_movement: {
+        Args: {
+          p_delta: number
+          p_justification: string
+          p_kind?: string
+          p_product_id: string
+          p_stock_location_id: string
+          p_stock_type_id: string
+        }
+        Returns: number
       }
       sales_period_by_category: {
         Args: { p_end: string; p_start: string }

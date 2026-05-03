@@ -36,6 +36,7 @@ yarn-error.log*
 .turbo/
 .cache/
 coverage/
+*.tsbuildinfo
 
 # Supabase CLI cache (não versionar)
 supabase/.temp/

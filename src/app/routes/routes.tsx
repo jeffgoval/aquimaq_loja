@@ -10,6 +10,9 @@ import { ProductsAccess } from '@modules/products/routes/ProductsAccess';
 import { ProductsListPage } from '@modules/products/routes/ProductsListPage';
 import { ProductEditorPage } from '@modules/products/routes/ProductEditorPage';
 import { ProductImportPage } from '@modules/products/routes/ProductImportPage';
+import { InventoryAccess } from '@modules/inventory/routes/InventoryAccess';
+import { InventoryPage } from '@modules/inventory/routes/InventoryPage';
+import { TasksPage } from '@modules/tasks/routes/TasksPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -42,6 +45,12 @@ export function AppRoutes() {
           <Route path="new" element={<ProductEditorPage />} />
           <Route path=":id/edit" element={<ProductEditorPage />} />
         </Route>
+
+        <Route path="inventory" element={<InventoryAccess />}>
+          <Route index element={<InventoryPage />} />
+        </Route>
+
+        <Route path="tasks" element={<TasksPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
