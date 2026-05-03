@@ -72,9 +72,12 @@ export function useCrmAccess() {
     [flagsQ.data],
   );
 
+  const crmAccessDegraded = matrixQ.isError || overridesQ.isError || flagsQ.isError;
+
   return {
     isNavItemVisible,
     canExportAuditCsv,
+    crmAccessDegraded,
     isLoading: matrixQ.isLoading || overridesQ.isLoading || flagsQ.isLoading,
   };
 }

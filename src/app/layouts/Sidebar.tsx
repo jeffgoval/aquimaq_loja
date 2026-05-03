@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom';
 import { useCurrentUser } from '@modules/auth/hooks/useAuth';
 import { useCrmAccess } from '@modules/settings/hooks/useCrmAccess';
 import { cn } from '@shared/lib/cn';
-import { NAVIGATION, type NavItem } from './navigation';
+import { NAVIGATION, navItemRoleAllowed, type NavItem } from './navigation';
 
 function visibleFor(items: NavItem[], role: string): NavItem[] {
-  return items.filter((it) => !it.roles || it.roles.includes(role as never));
+  return items.filter((it) => navItemRoleAllowed(it, role));
 }
 
 export function Sidebar() {

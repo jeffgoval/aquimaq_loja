@@ -34,6 +34,28 @@ export interface NavGroup {
   items: NavItem[];
 }
 
+/** Alinhado ao PRD §6 — visibilidade por role antes da matriz CRM (Fase 12). */
+export function navItemRoleAllowed(item: NavItem, role: string): boolean {
+  if (!item.roles) return true;
+  return item.roles.includes(role as Role);
+}
+
+/**
+ * Resolve o item de menu correspondente ao caminho (ex.: `/products/xyz/edit` → item `/products`).
+ * Rotas sem entrada no menu não aplicam gate CRM aqui.
+ */
+export function getNavItemForRoute(pathname: string): NavItem | null {
+  const normalized =
+    pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+  const flat = NAVIGATION.flatMap((g) => g.items);
+  const sorted = [...flat].sort((a, b) => b.to.length - a.to.length);
+  for (const it of sorted) {
+    if (normalized === it.to) return it;
+    if (it.to !== '/' && normalized.startsWith(`${it.to}/`)) return it;
+  }
+  return null;
+}
+
 const ALL: Role[] = [
   'admin',
   'gestor',
