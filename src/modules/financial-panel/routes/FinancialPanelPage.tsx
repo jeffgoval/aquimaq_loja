@@ -113,8 +113,8 @@ function DataMeta({ source, refD, cap }: { source: string; refD: string; cap: st
 
 function traceColumn<T extends { data_source: string; reference_date: string; captured_at: string }>(): ColumnDef<T> {
   return {
-    id: 'trace_prd_18_3',
-    header: 'Rastreio (PRD §18.3)',
+    id: 'trace_lineage',
+    header: 'Rastreabilidade',
     cell: ({ row }) => (
       <DataMeta source={row.original.data_source} refD={row.original.reference_date} cap={row.original.captured_at} />
     ),
@@ -478,8 +478,8 @@ export function FinancialPanelPage() {
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Painel financeiro e contábil</h1>
         <p className="text-sm text-muted-foreground">
-          Fase 10 — contas a receber/pagar, inadimplência, fluxo de caixa projetado, DRE contábil, impostos e notas. Cada linha
-          mostra fonte e datas conforme PRD §18.3.
+          Contas a receber e a pagar, inadimplência, fluxo de caixa projetado, DRE contábil, impostos e notas importadas. Em
+          cada registo indicam-se a fonte dos dados, a data de referência e o momento de captura no CRM.
         </p>
       </div>
 
@@ -580,7 +580,7 @@ export function FinancialPanelPage() {
           <CardHeader className="flex flex-row items-center justify-between gap-2">
             <div>
               <CardTitle>Contas a receber</CardTitle>
-              <CardDescription>Fonte, data de referência e registo no CRM em cada linha (§18.3)</CardDescription>
+              <CardDescription>Fonte, data de referência e registo no CRM em cada linha.</CardDescription>
             </div>
             <Button variant="outline" size="sm" className="gap-2" onClick={() => void arQ.refetch()}>
               <RefreshCw className="h-4 w-4" />
@@ -598,7 +598,7 @@ export function FinancialPanelPage() {
           <CardHeader className="flex flex-row items-center justify-between gap-2">
             <div>
               <CardTitle>Contas a pagar</CardTitle>
-              <CardDescription>Proveniência e datas conforme PRD §18.3</CardDescription>
+              <CardDescription>Proveniência dos dados e datas de referência em cada linha.</CardDescription>
             </div>
             <Button variant="outline" size="sm" className="gap-2" onClick={() => void apQ.refetch()}>
               <RefreshCw className="h-4 w-4" />

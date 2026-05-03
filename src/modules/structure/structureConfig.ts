@@ -17,8 +17,8 @@ export interface StructureSegmentConfig {
   title: string;
   description: string;
   formVariant: StructureFormVariant;
-  /** Carregar nomes do PRD §10 (só centros e categorias) */
-  seedPrd?: boolean;
+  /** Permite carregar listas sugeridas de nomes (centros de resultado e categorias). */
+  seedSuggestedDefaults?: boolean;
   order: { column: string; ascending?: boolean };
 }
 
@@ -27,9 +27,9 @@ export const STRUCTURE_SEGMENT_CONFIG: StructureSegmentConfig[] = [
     segment: 'result-centers',
     table: 'result_centers',
     title: 'Centros de resultado',
-    description: 'Linhas de negócio para alocação gerencial (PRD §10).',
+    description: 'Linhas de negócio para alocação gerencial de produtos e indicadores.',
     formVariant: 'nameDesc',
-    seedPrd: true,
+    seedSuggestedDefaults: true,
     order: { column: 'name' },
   },
   {
@@ -46,7 +46,7 @@ export const STRUCTURE_SEGMENT_CONFIG: StructureSegmentConfig[] = [
     title: 'Categorias',
     description: 'Classificação principal de produtos (tabela product_categories).',
     formVariant: 'nameDesc',
-    seedPrd: true,
+    seedSuggestedDefaults: true,
     order: { column: 'name' },
   },
   {

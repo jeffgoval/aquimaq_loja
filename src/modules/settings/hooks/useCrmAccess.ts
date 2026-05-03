@@ -27,7 +27,7 @@ function permissionDefaultAllowed(
 }
 
 /**
- * Leitura da matriz CRM (Fase 12) para filtrar navegação e funcionalidades por role, override e feature flag.
+ * Lê a matriz de permissões CRM para filtrar navegação e funcionalidades por perfil, excepções e feature flags.
  */
 export function useCrmAccess() {
   const user = useCurrentUser();

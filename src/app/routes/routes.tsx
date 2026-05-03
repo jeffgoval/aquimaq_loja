@@ -33,9 +33,7 @@ import { SettingsAccess } from '@modules/settings/routes/SettingsAccess';
 import { SettingsPage } from '@modules/settings/routes/SettingsPage';
 import { NotFoundPage } from './NotFoundPage';
 
-/**
- * Rotas protegidas no shell — evoluir por fase mantendo este arquivo como referência.
- */
+/** Mapa central das rotas da aplicação autenticada e respectivos acessos. */
 export function AppRoutes() {
   return (
     <Routes>

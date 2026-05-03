@@ -19,7 +19,7 @@ export interface DataTableProps<TData, TValue> {
 }
 
 /**
- * DataTable v1 — TanStack Table + estilo Aquimaq (PRD Fase 1).
+ * DataTable v1 — TanStack Table com estilo Aquimaq Slate.
  */
 export function DataTable<TData, TValue>({
   columns,

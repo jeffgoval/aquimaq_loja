@@ -102,20 +102,23 @@ export async function listApprovedSuggestionsForLink(): Promise<ApprovedSuggesti
     .select(
       `
       id,
-      product:products ( internal_code, description )
+      product:products ( internal_code, description, deleted_at )
     `,
     )
     .eq('status', 'aprovada')
     .order('created_at', { ascending: false })
     .limit(60);
   if (error) throw new Error(error.message);
-  return (data ?? []).map((row) => {
-    const r = row as {
-      id: string;
-      product: { internal_code: string; description: string } | null;
-    };
-    const p = r.product;
-    const label = p ? `${p.internal_code} — ${p.description}` : r.id;
-    return { id: r.id, label };
-  });
+  return (data ?? [])
+    .map((row) => {
+      const r = row as {
+        id: string;
+        product: { internal_code: string; description: string; deleted_at: string | null } | null;
+      };
+      if (r.product?.deleted_at) return null;
+      const p = r.product;
+      const label = p ? `${p.internal_code} — ${p.description}` : r.id;
+      return { id: r.id, label };
+    })
+    .filter((x): x is ApprovedSuggestionOption => x != null);
 }

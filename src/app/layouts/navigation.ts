@@ -23,9 +23,9 @@ export interface NavItem {
   icon: LucideIcon;
   /** Roles that may see this item. Empty = visible to all authenticated users. */
   roles?: Role[];
-  /** Chave em `crm_permission_catalog` / matriz (Fase 12). */
+  /** Chave em `crm_permission_catalog` / matriz de permissões. */
   permissionKey?: string;
-  /** Flag opcional em `crm_feature_catalog` (Fase 12). */
+  /** Flag opcional em `crm_feature_catalog`. */
   featureFlagKey?: string;
 }
 
@@ -34,7 +34,7 @@ export interface NavGroup {
   items: NavItem[];
 }
 
-/** Alinhado ao PRD §6 — visibilidade por role antes da matriz CRM (Fase 12). */
+/** Visibilidade por perfil; a matriz CRM e overrides refinam o acesso. */
 export function navItemRoleAllowed(item: NavItem, role: string): boolean {
   if (!item.roles) return true;
   return item.roles.includes(role as Role);
@@ -68,7 +68,7 @@ const ALL: Role[] = [
   'consulta',
 ];
 
-/** Single source of truth for the sidebar. Role gating mirrors PRD §6. */
+/** Definição única do menu lateral e regras de acesso por perfil. */
 export const NAVIGATION: NavGroup[] = [
   {
     label: 'Visão geral',

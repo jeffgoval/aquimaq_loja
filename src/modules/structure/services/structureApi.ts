@@ -1,6 +1,6 @@
 import { supabase } from '@app/config/supabase';
 import type { Database, Json } from '@shared/types/database';
-import { PRD_CATEGORY_NAMES, PRD_RESULT_CENTER_NAMES } from '../constants/prdSeeds';
+import { DEFAULT_CATEGORY_NAMES, DEFAULT_RESULT_CENTER_NAMES } from '../constants/structureDefaultSeeds';
 
 export type StructureTableName =
   | 'result_centers'
@@ -79,13 +79,13 @@ export async function listAuditForEntity(
   return (data ?? []) as AuditLogRow[];
 }
 
-export type SeedPrdOutcome = { inserted: number };
+export type SeedDefaultsOutcome = { inserted: number };
 
-export async function seedResultCentersFromPrd(): Promise<SeedPrdOutcome> {
+export async function seedResultCentersFromDefaults(): Promise<SeedDefaultsOutcome> {
   const { data: existing, error: e1 } = await supabase.from('result_centers').select('name');
   if (e1) throw new Error(e1.message);
   const have = new Set((existing ?? []).map((r) => r.name));
-  const missing = PRD_RESULT_CENTER_NAMES.filter((n) => !have.has(n));
+  const missing = DEFAULT_RESULT_CENTER_NAMES.filter((n) => !have.has(n));
   if (missing.length === 0) return { inserted: 0 };
   const { data, error } = await supabase
     .from('result_centers')
@@ -95,11 +95,11 @@ export async function seedResultCentersFromPrd(): Promise<SeedPrdOutcome> {
   return { inserted: data?.length ?? 0 };
 }
 
-export async function seedCategoriesFromPrd(): Promise<SeedPrdOutcome> {
+export async function seedCategoriesFromDefaults(): Promise<SeedDefaultsOutcome> {
   const { data: existing, error: e1 } = await supabase.from('product_categories').select('name');
   if (e1) throw new Error(e1.message);
   const have = new Set((existing ?? []).map((r) => r.name));
-  const missing = PRD_CATEGORY_NAMES.filter((n) => !have.has(n));
+  const missing = DEFAULT_CATEGORY_NAMES.filter((n) => !have.has(n));
   if (missing.length === 0) return { inserted: 0 };
   const { data, error } = await supabase
     .from('product_categories')

@@ -87,9 +87,7 @@ function WeeklyRowItem({ row }: { row: WeeklyActionListItem }) {
   );
 }
 
-/**
- * Painel da Casa v1 (PRD §9) — visão executiva diária: métrica composta, alertas críticos, ações da semana.
- */
+/** Painel principal: indicador de adesão ao padrão interno, alertas prioritários e acções da rotina semanal. */
 export function DashboardPage() {
   const user = useCurrentUser();
   const snapshotQ = useQuery<NewStandardSnapshot>({
@@ -190,8 +188,8 @@ export function DashboardPage() {
                     novo (cadastro mestre + política comercial).
                   </p>
                   <p className="text-xs">
-                    Cálculo composto: percentagem na base (<code className="text-foreground">dashboard_new_standard_pct</code>
-                    ) com contagem explícita para contexto imediato.
+                    A percentagem é calculada na base de dados; os totais abaixo permitem validar rapidamente o numerador e o
+                    denominador.
                   </p>
                 </>
               ) : null}
@@ -208,7 +206,7 @@ export function DashboardPage() {
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Indicadores rápidos</CardTitle>
-              <CardDescription>Tarefas e estoque gerencial (Fase 3).</CardDescription>
+              <CardDescription>Tarefas em aberto e alertas de stock gerencial.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2">
               <Link

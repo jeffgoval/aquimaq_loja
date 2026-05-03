@@ -307,7 +307,8 @@ export function WorkshopPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Oficina</h1>
           <p className="text-sm text-muted-foreground">
-            OS gerencial, peças (stock OFICINA), workflow, alertas de parada e garantia com fotos no Storage (PRD §15).
+            Ordens de serviço gerenciais, consumo de peças (stock oficina), fluxo de estado, alertas de parada e registo de
+            garantia com anexos no armazenamento.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -726,7 +727,7 @@ export function WorkshopPage() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Garantia</DialogTitle>
-            <DialogDescription>Prazo e/ou observação (PRD: garantia com prazo ou observação).</DialogDescription>
+            <DialogDescription>Indique prazo e observações aplicáveis à garantia.</DialogDescription>
           </DialogHeader>
           {wo ? (
             <form

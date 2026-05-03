@@ -8,7 +8,7 @@ export function StructureLayout() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Estrutura operacional</h1>
         <p className="text-sm text-muted-foreground">
-          Cadastros mestres de apoio (PRD §10) — centros, categorias, marcas, fornecedores e unidades.
+          Cadastros de apoio à operação: centros de resultado e de custo, categorias, marcas, fornecedores e unidades.
         </p>
       </div>
 

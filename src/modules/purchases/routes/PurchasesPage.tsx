@@ -412,7 +412,7 @@ export function PurchasesPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Compras</h1>
           <p className="text-sm text-muted-foreground">
-            Sugestões a partir do mínimo gerencial, cotações por fornecedor, aprovação e histórico de custo cotado (PRD §13).
+            Sugestões a partir do stock mínimo, cotações por fornecedor, fluxo de aprovação e histórico de custos cotados.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

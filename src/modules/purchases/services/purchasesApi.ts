@@ -9,7 +9,13 @@ export type PurchaseSuggestionInsert = Database['public']['Tables']['purchase_su
 export type PurchaseSuggestionUpdate = Database['public']['Tables']['purchase_suggestions']['Update'];
 
 export type PurchaseSuggestionListRow = PurchaseSuggestionRow & {
-  product: { id: string; internal_code: string; description: string; min_stock: number | null } | null;
+  product: {
+    id: string;
+    internal_code: string;
+    description: string;
+    min_stock: number | null;
+    deleted_at: string | null;
+  } | null;
   responsible: { id: string; full_name: string } | null;
   approver: { id: string; full_name: string } | null;
 };
@@ -19,14 +25,14 @@ export type PurchaseQuoteListRow = PurchaseQuoteRow & {
 };
 
 export type QuotedCostHistoryRow = Database['public']['Tables']['product_quoted_cost_history']['Row'] & {
-  product: { internal_code: string; description: string } | null;
+  product: { internal_code: string; description: string; deleted_at: string | null } | null;
   supplier: { name: string } | null;
   recorder: { full_name: string } | null;
 };
 
 const suggestionSelect = `
   *,
-  product:products ( id, internal_code, description, min_stock ),
+  product:products ( id, internal_code, description, min_stock, deleted_at ),
   responsible:profiles!purchase_suggestions_responsible_user_id_fkey ( id, full_name ),
   approver:profiles!purchase_suggestions_approved_by_fkey ( id, full_name )
 `;
@@ -43,7 +49,8 @@ export async function listPurchaseSuggestions(limit = 200): Promise<PurchaseSugg
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
-  return (data ?? []) as PurchaseSuggestionListRow[];
+  const rows = (data ?? []) as PurchaseSuggestionListRow[];
+  return rows.filter((r) => r.product == null || r.product.deleted_at == null);
 }
 
 export async function countPurchaseSuggestionsByStatus(status: string): Promise<number> {
@@ -71,7 +78,7 @@ export async function listQuotedCostHistory(limit = 80): Promise<QuotedCostHisto
     .select(
       `
       *,
-      product:products ( internal_code, description ),
+      product:products ( internal_code, description, deleted_at ),
       supplier:suppliers ( name ),
       recorder:profiles!product_quoted_cost_history_recorded_by_fkey ( full_name )
     `,
@@ -79,11 +86,17 @@ export async function listQuotedCostHistory(limit = 80): Promise<QuotedCostHisto
     .order('recorded_at', { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
-  return (data ?? []) as QuotedCostHistoryRow[];
+  const hist = (data ?? []) as QuotedCostHistoryRow[];
+  return hist.filter((r) => r.product == null || r.product.deleted_at == null);
 }
 
 export async function getGerencialVendaQtyForProduct(productId: string): Promise<number> {
-  const { data: st, error: stErr } = await supabase.from('stock_types').select('id').eq('code', 'VENDA').maybeSingle();
+  const { data: st, error: stErr } = await supabase
+    .from('stock_types')
+    .select('id')
+    .eq('code', 'VENDA')
+    .is('deleted_at', null)
+    .maybeSingle();
   if (stErr) throw new Error(stErr.message);
   if (!st?.id) return 0;
   const { data, error } = await supabase

@@ -76,7 +76,7 @@ export type Database = {
           },
         ]
       }
-      /** Fase 1 — após `supabase db push`, rode `npm run types:gen` para alinhar com o remoto. */
+      /** Após alterações de schema no Supabase, execute `npm run types:gen` para alinhar estes tipos com o remoto. */
       audit_logs: {
         Row: {
           action: string

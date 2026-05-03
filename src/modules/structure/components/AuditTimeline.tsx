@@ -45,7 +45,7 @@ export function AuditTimeline({ entityType, entityId, enabled }: AuditTimelinePr
   if (q.isError) {
     return (
       <p className="text-xs text-muted-foreground">
-        Auditoria indisponível (confirme migration Fase 1 e permissões).
+        Auditoria indisponível. Verifique migrações da base de dados, políticas RLS e o seu perfil de acesso.
       </p>
     );
   }

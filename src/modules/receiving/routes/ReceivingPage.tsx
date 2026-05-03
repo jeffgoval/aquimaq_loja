@@ -244,7 +244,8 @@ export function ReceivingPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Recebimento</h1>
           <p className="text-sm text-muted-foreground">
-            Checklist de conferência (PRD §14), divergência e custo diferente geram tarefas; liberação entra saldo VENDA.
+            Checklist de conferência, tratamento de divergências e custos divergentes com geração de tarefas; após liberação,
+            o saldo reflecte-se no tipo de stock de venda.
           </p>
         </div>
         <Button type="button" onClick={() => setCreateOpen(true)}>

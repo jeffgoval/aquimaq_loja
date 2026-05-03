@@ -275,6 +275,17 @@ export function ProductEditorPage() {
     );
   }
 
+  if (!isCreate && productQuery.data?.deleted_at) {
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">Este produto foi arquivado e não pode ser editado.</p>
+        <Button variant="secondary" asChild>
+          <Link to="/products">Voltar à lista</Link>
+        </Button>
+      </div>
+    );
+  }
+
   const currentScore = !isCreate ? productQuery.data?.registration_score : undefined;
   const currentPend = !isCreate ? productQuery.data?.pendencies : undefined;
 
@@ -299,7 +310,9 @@ export function ProductEditorPage() {
 
       <div>
         <h1 className="text-xl font-semibold tracking-tight">{isCreate ? 'Novo produto' : 'Editar produto'}</h1>
-        <p className="text-sm text-muted-foreground">Campos conforme PRD §11. O score recalcula ao salvar.</p>
+        <p className="text-sm text-muted-foreground">
+          Preencha os dados operacionais e comerciais; o score de cadastro é recalculado ao gravar.
+        </p>
       </div>
 
       {!isCreate && currentPend && currentPend.length > 0 ? (

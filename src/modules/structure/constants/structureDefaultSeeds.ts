@@ -1,5 +1,5 @@
-/** PRD §10 — centros de resultado iniciais */
-export const PRD_RESULT_CENTER_NAMES = [
+/** Lista sugerida de centros de resultado para carga inicial (estrutura operacional). */
+export const DEFAULT_RESULT_CENTER_NAMES = [
   'Loja / varejo balcão',
   'Máquinas e equipamentos',
   'Peças e reposição',
@@ -8,8 +8,8 @@ export const PRD_RESULT_CENTER_NAMES = [
   'Fertilizantes e corretivos',
 ] as const;
 
-/** PRD §10 — categorias iniciais */
-export const PRD_CATEGORY_NAMES = [
+/** Lista sugerida de categorias de produto para carga inicial. */
+export const DEFAULT_CATEGORY_NAMES = [
   'Defensivos',
   'Fertilizantes',
   'Foliares',

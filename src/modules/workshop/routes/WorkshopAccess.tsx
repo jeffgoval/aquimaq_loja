@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { RoleGate } from '@shared/components/auth/RoleGate';
 
-/** PRD §15 — oficina gerencial: admin, gestor, oficina. */
+/** Oficina gerencial: administrador, gestor ou oficina. */
 export function WorkshopAccess() {
   return (
     <RoleGate allow={['admin', 'gestor', 'oficina']} fallback={<Navigate to="/" replace />}>

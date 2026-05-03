@@ -1,11 +1,21 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Plus, Upload, Pencil } from 'lucide-react';
-import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ds/primitives';
+import { Archive, Plus, Upload, Pencil } from 'lucide-react';
+import { toast } from 'sonner';
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+} from '@ds/primitives';
 import { DataTable } from '@shared/components/tables/DataTable';
-import { listProducts, type ProductListRow } from '../services/productsApi';
+import { listProducts, softDeleteProduct, type ProductListRow } from '../services/productsApi';
 
 function StatCard({ title, value, hint }: { title: string; value: number; hint?: string }) {
   return (
@@ -20,7 +30,19 @@ function StatCard({ title, value, hint }: { title: string; value: number; hint?:
 }
 
 export function ProductsListPage() {
+  const qc = useQueryClient();
   const q = useQuery({ queryKey: ['products', 'list'], queryFn: listProducts });
+  const [search, setSearch] = useState('');
+
+  const archiveMut = useMutation({
+    mutationFn: (productId: string) => softDeleteProduct(productId),
+    onSuccess: () => {
+      toast.success('Produto arquivado.');
+      void qc.invalidateQueries({ queryKey: ['products', 'list'] });
+      void qc.invalidateQueries({ queryKey: ['products', 'one'] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const stats = useMemo(() => {
     const rows = q.data ?? [];
@@ -35,7 +57,20 @@ export function ProductsListPage() {
     return { total, complete, incomplete, newStd, noPrice, noLoc, noSupplier, noReview };
   }, [q.data]);
 
-  const columns: ColumnDef<ProductListRow>[] = [
+  const filteredRows = useMemo(() => {
+    const rows = q.data ?? [];
+    const t = search.trim().toLowerCase();
+    if (!t) return rows;
+    return rows.filter((r) => {
+      const code = (r.internal_code ?? '').toLowerCase();
+      const desc = (r.description ?? '').toLowerCase();
+      const erp = (r.erp_code ?? '').toLowerCase();
+      return code.includes(t) || desc.includes(t) || erp.includes(t);
+    });
+  }, [q.data, search]);
+
+  const columns: ColumnDef<ProductListRow>[] = useMemo(
+    () => [
     { accessorKey: 'internal_code', header: 'Código' },
     { accessorKey: 'description', header: 'Produto' },
     {
@@ -132,21 +167,41 @@ export function ProductsListPage() {
       id: 'actions',
       header: '',
       cell: ({ row }) => (
-        <Button type="button" size="icon" variant="ghost" asChild aria-label="Editar">
-          <Link to={`/products/${row.original.id}/edit`}>
-            <Pencil className="h-4 w-4" />
-          </Link>
-        </Button>
+        <div className="flex items-center gap-0.5">
+          <Button type="button" size="icon" variant="ghost" asChild aria-label="Editar">
+            <Link to={`/products/${row.original.id}/edit`}>
+              <Pencil className="h-4 w-4" />
+            </Link>
+          </Button>
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            aria-label="Arquivar"
+            disabled={archiveMut.isPending}
+            onClick={() => {
+              const label = row.original.description || row.original.internal_code || 'este produto';
+              if (!window.confirm(`Arquivar "${label}"? Deixa de aparecer na lista operativa.`)) return;
+              archiveMut.mutate(row.original.id);
+            }}
+          >
+            <Archive className="h-4 w-4" />
+          </Button>
+        </div>
       ),
     },
-  ];
+    ],
+    [archiveMut.isPending, archiveMut.mutate],
+  );
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Cadastro mestre</h1>
-          <p className="text-sm text-muted-foreground">Produtos gerenciais, score de cadastro (PRD §11) e pendências.</p>
+          <p className="text-sm text-muted-foreground">
+            Base gerencial de produtos: completude, score de cadastro, pendências e conformidade com o padrão interno.
+          </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="secondary" size="sm" asChild>
@@ -176,12 +231,22 @@ export function ProductsListPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Lista</CardTitle>
-          <CardDescription>Ordenação por descrição. Score e pendências atualizados ao gravar.</CardDescription>
+        <CardHeader className="space-y-3">
+          <div>
+            <CardTitle>Lista</CardTitle>
+            <CardDescription>Ordenação por descrição. Score e pendências atualizados ao gravar.</CardDescription>
+          </div>
+          <Input
+            type="search"
+            placeholder="Buscar por código, ERP ou descrição…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="max-w-md"
+            aria-label="Buscar produtos"
+          />
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={q.data ?? []} isLoading={q.isLoading} getRowId={(r) => r.id} />
+          <DataTable columns={columns} data={filteredRows} isLoading={q.isLoading} getRowId={(r) => r.id} />
         </CardContent>
       </Card>
     </div>

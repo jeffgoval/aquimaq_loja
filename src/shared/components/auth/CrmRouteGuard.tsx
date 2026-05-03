@@ -5,8 +5,8 @@ import { useCrmAccess } from '@modules/settings/hooks/useCrmAccess';
 import { getNavItemForRoute, navItemRoleAllowed } from '@app/layouts/navigation';
 
 /**
- * Garante que a rota actual respeita a mesma matriz + flags + roles do menu (Fase 12).
- * Se as tabelas CRM falharem a carregar, não bloqueia o acesso (modo degradado).
+ * Garante que a rota actual respeita a mesma matriz de permissões, feature flags e perfis definidos para o menu.
+ * Se os dados de permissão falharem a carregar, o acesso não é bloqueado (modo degradado).
  */
 export function CrmRouteGuard({ children }: { children?: ReactNode }) {
   const location = useLocation();

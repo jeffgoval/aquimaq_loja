@@ -310,8 +310,8 @@ export function TasksPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Tarefas</h1>
           <p className="text-sm text-muted-foreground">
-            Responsável, prazo, prioridade e origem (PRD §16). Tarefas podem ser geradas pelo cadastro (ex.: sem
-            localização).
+            Gestão de responsáveis, prazos, prioridades e origem. Algumas tarefas são criadas automaticamente a partir de
+            regras do cadastro de produtos (por exemplo, pendência de localização).
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">

@@ -277,7 +277,7 @@ export function InventoryPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Estoque gerencial</h1>
         <p className="text-sm text-muted-foreground">
-          Localizações físicas, saldos por tipo (PRD §12) e ajustes com rastreio e justificativa.
+          Localizações físicas, saldos por tipo de stock e movimentações com rastreio e justificativa obrigatória.
         </p>
       </div>
 

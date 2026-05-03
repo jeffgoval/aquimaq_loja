@@ -41,8 +41,8 @@ import {
   deleteStructureRow,
   insertStructureRow,
   listStructureRows,
-  seedCategoriesFromPrd,
-  seedResultCentersFromPrd,
+  seedCategoriesFromDefaults,
+  seedResultCentersFromDefaults,
   updateStructureRow,
   type StructureTableName,
 } from '../services/structureApi';
@@ -82,15 +82,15 @@ export function StructureEntityCrud({ config }: StructureEntityCrudProps) {
 
   const seedMutation = useMutation({
     mutationFn: async () => {
-      if (config.table === 'result_centers') return seedResultCentersFromPrd();
-      if (config.table === 'product_categories') return seedCategoriesFromPrd();
-      throw new Error('Seed PRD não disponível para esta lista.');
+      if (config.table === 'result_centers') return seedResultCentersFromDefaults();
+      if (config.table === 'product_categories') return seedCategoriesFromDefaults();
+      throw new Error('Carga sugerida não disponível para esta lista.');
     },
     onSuccess: (out) => {
       if (out.inserted === 0) {
-        toast.info('Nada novo para inserir: os nomes do PRD §10 já constam na base.');
+        toast.info('Nenhum registo novo: a lista sugerida já está reflectida na base de dados.');
       } else {
-        toast.success(`${out.inserted} registro(s) do PRD §10 inserido(s).`);
+        toast.success(`${out.inserted} registo(s) inserido(s) a partir da lista sugerida.`);
       }
       void qc.invalidateQueries({ queryKey: ['structure', config.table] });
     },
@@ -345,7 +345,7 @@ export function StructureEntityCrud({ config }: StructureEntityCrudProps) {
           <CardDescription>{config.description}</CardDescription>
         </div>
         <div className="flex flex-wrap gap-2">
-          {config.seedPrd ? (
+          {config.seedSuggestedDefaults ? (
             <Button
               type="button"
               variant="secondary"
@@ -354,7 +354,7 @@ export function StructureEntityCrud({ config }: StructureEntityCrudProps) {
               onClick={() => seedMutation.mutate()}
             >
               <Sparkles className="h-4 w-4" />
-              Modelo PRD §10
+              Carregar lista sugerida
             </Button>
           ) : null}
           <Button type="button" size="sm" onClick={openCreate}>

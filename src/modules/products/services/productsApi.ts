@@ -77,7 +77,13 @@ export async function insertProduct(row: ProductInsert): Promise<ProductRow> {
 
 export async function updateProduct(id: string, patch: ProductUpdate): Promise<ProductRow> {
   const payload = stripComputedForWrite(patch as Record<string, unknown>) as ProductUpdate;
-  const { data, error } = await supabase.from('products').update(payload).eq('id', id).select('*').single();
+  const { data, error } = await supabase
+    .from('products')
+    .update(payload)
+    .eq('id', id)
+    .is('deleted_at', null)
+    .select('*')
+    .single();
   if (error) throw new Error(error.message);
   return data as ProductRow;
 }
@@ -157,6 +163,7 @@ export async function listCategories(): Promise<IdName[]> {
     .from('product_categories')
     .select('id, name')
     .eq('is_active', true)
+    .is('deleted_at', null)
     .order('name');
   if (error) throw new Error(error.message);
   return (data ?? []) as IdName[];
@@ -169,31 +176,52 @@ export async function listSubcategories(categoryId: string | null): Promise<{ id
     .select('id, name, category_id')
     .eq('category_id', categoryId)
     .eq('is_active', true)
+    .is('deleted_at', null)
     .order('name');
   if (error) throw new Error(error.message);
   return (data ?? []) as { id: string; name: string; category_id: string }[];
 }
 
 export async function listBrands(): Promise<IdName[]> {
-  const { data, error } = await supabase.from('brands').select('id, name').eq('is_active', true).order('name');
+  const { data, error } = await supabase
+    .from('brands')
+    .select('id, name')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .order('name');
   if (error) throw new Error(error.message);
   return (data ?? []) as IdName[];
 }
 
 export async function listSuppliers(): Promise<IdName[]> {
-  const { data, error } = await supabase.from('suppliers').select('id, name').eq('is_active', true).order('name');
+  const { data, error } = await supabase
+    .from('suppliers')
+    .select('id, name')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .order('name');
   if (error) throw new Error(error.message);
   return (data ?? []) as IdName[];
 }
 
 export async function listUnits(): Promise<UnitRow[]> {
-  const { data, error } = await supabase.from('units').select('id, code, name').eq('is_active', true).order('code');
+  const { data, error } = await supabase
+    .from('units')
+    .select('id, code, name')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .order('code');
   if (error) throw new Error(error.message);
   return (data ?? []) as UnitRow[];
 }
 
 export async function listResultCenters(): Promise<IdName[]> {
-  const { data, error } = await supabase.from('result_centers').select('id, name').eq('is_active', true).order('name');
+  const { data, error } = await supabase
+    .from('result_centers')
+    .select('id, name')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .order('name');
   if (error) throw new Error(error.message);
   return (data ?? []) as IdName[];
 }

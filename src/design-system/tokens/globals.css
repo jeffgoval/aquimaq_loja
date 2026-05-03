@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 /* Aquimaq Slate — single source of truth for color tokens.
-   PRD §25.3: sober, executive, operational. */
+   Direcção visual: sóbrio, executivo, orientado à operação. */
 @layer base {
   :root {
     /* Surfaces */

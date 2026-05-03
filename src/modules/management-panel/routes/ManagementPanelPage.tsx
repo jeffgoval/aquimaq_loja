@@ -410,7 +410,10 @@ export function ManagementPanelPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Integração API do ERP</CardTitle>
-            <CardDescription>Sincronização directa (REST/GraphQL) por credenciais — roadmap Fase 9+.</CardDescription>
+            <CardDescription>
+              Sincronização directa com o ERP (REST ou GraphQL) mediante credenciais — prevista para uma fase posterior de
+              integração.
+            </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             <p className="text-sm text-muted-foreground">

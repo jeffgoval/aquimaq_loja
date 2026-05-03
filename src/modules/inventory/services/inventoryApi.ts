@@ -12,7 +12,13 @@ export type StockBalanceRow = {
   stock_location_id: string;
   quantity: number;
   updated_at: string;
-  products: { id: string; description: string; internal_code: string; min_stock: number | null } | null;
+  products: {
+    id: string;
+    description: string;
+    internal_code: string;
+    min_stock: number | null;
+    deleted_at: string | null;
+  } | null;
   stock_types: { id: string; code: string; name: string } | null;
   stock_locations: { id: string; code: string; name: string } | null;
 };
@@ -27,7 +33,7 @@ export type StockMovementListRow = {
   movement_kind: string;
   justification: string;
   created_at: string;
-  products: { description: string; internal_code: string } | null;
+  products: { description: string; internal_code: string; deleted_at: string | null } | null;
   stock_types: { code: string } | null;
   stock_locations: { code: string } | null;
   creator: { full_name: string } | null;
@@ -72,14 +78,15 @@ export async function listStockBalances(): Promise<StockBalanceRow[]> {
       stock_location_id,
       quantity,
       updated_at,
-      products ( id, description, internal_code, min_stock ),
+      products ( id, description, internal_code, min_stock, deleted_at ),
       stock_types ( id, code, name ),
       stock_locations ( id, code, name )
     `,
     )
     .order('updated_at', { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []) as StockBalanceRow[];
+  const rows = (data ?? []) as StockBalanceRow[];
+  return rows.filter((r) => r.products && r.products.deleted_at == null);
 }
 
 export async function listProductsForStock(): Promise<ProductOption[]> {
@@ -114,7 +121,7 @@ export async function listStockMovements(limit = 40): Promise<StockMovementListR
       movement_kind,
       justification,
       created_at,
-      products ( description, internal_code ),
+      products ( description, internal_code, deleted_at ),
       stock_types ( code ),
       stock_locations ( code ),
       creator:profiles!stock_movements_created_by_fkey ( full_name )
@@ -123,7 +130,8 @@ export async function listStockMovements(limit = 40): Promise<StockMovementListR
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
-  return (data ?? []) as StockMovementListRow[];
+  const movements = (data ?? []) as StockMovementListRow[];
+  return movements.filter((r) => r.products && r.products.deleted_at == null);
 }
 
 export async function applyStockMovement(args: {

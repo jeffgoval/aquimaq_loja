@@ -243,8 +243,8 @@ export function SettingsPage() {
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Configurações</h1>
         <p className="text-sm text-muted-foreground">
-          Fase 12 — auditoria com filtros e exportação; matriz de permissões e feature flags (admin); excepções por utilizador
-          (admin).
+          Auditoria com filtros e exportação; matriz de permissões e feature flags (administrador); excepções por utilizador
+          (administrador).
         </p>
       </div>
 
@@ -337,8 +337,10 @@ export function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Matriz de permissões</CardTitle>
-            <CardDescription>Linhas = permissões de navegação; colunas = roles. Desmarcar remove o acesso mesmo que o role PRD o
-              permitisse.</CardDescription>
+            <CardDescription>
+              Linhas: permissões de navegação. Colunas: perfis. Desmarcar remove o acesso imediato, independentemente do perfil
+              predefinido.
+            </CardDescription>
           </CardHeader>
           <CardContent className="overflow-x-auto">
             <table className="w-full min-w-[720px] border-collapse text-sm">

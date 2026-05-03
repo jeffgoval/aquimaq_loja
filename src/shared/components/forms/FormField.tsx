@@ -10,7 +10,7 @@ export interface FormFieldProps {
 }
 
 /**
- * FormField v1 — rótulo, controle, dica e erro alinhados ao DS (PRD Fase 1).
+ * FormField v1 — rótulo, controlo, dica de contexto e mensagem de erro alinhados ao design system.
  */
 export function FormField({ id, label, error, hint, children }: FormFieldProps) {
   return (
