@@ -468,6 +468,335 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_accounting_notes: {
+        Row: {
+          batch_id: string | null
+          body: string | null
+          captured_at: string
+          data_source: string
+          id: string
+          period_month: string
+          reference_date: string
+          title: string
+        }
+        Insert: {
+          batch_id?: string | null
+          body?: string | null
+          captured_at?: string
+          data_source: string
+          id?: string
+          period_month: string
+          reference_date: string
+          title: string
+        }
+        Update: {
+          batch_id?: string | null
+          body?: string | null
+          captured_at?: string
+          data_source?: string
+          id?: string
+          period_month?: string
+          reference_date?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_accounting_notes_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'financial_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      financial_cash_projections: {
+        Row: {
+          batch_id: string | null
+          captured_at: string
+          data_source: string
+          description: string
+          id: string
+          inflow: number
+          outflow: number
+          projection_date: string
+          reference_date: string
+        }
+        Insert: {
+          batch_id?: string | null
+          captured_at?: string
+          data_source: string
+          description: string
+          id?: string
+          inflow?: number
+          outflow?: number
+          projection_date: string
+          reference_date: string
+        }
+        Update: {
+          batch_id?: string | null
+          captured_at?: string
+          data_source?: string
+          description?: string
+          id?: string
+          inflow?: number
+          outflow?: number
+          projection_date?: string
+          reference_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_cash_projections_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'financial_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      financial_dre_contabil: {
+        Row: {
+          account_code: string
+          account_name: string
+          amount: number
+          batch_id: string | null
+          captured_at: string
+          data_source: string
+          id: string
+          period_month: string
+          reference_date: string
+          section: string
+        }
+        Insert: {
+          account_code: string
+          account_name: string
+          amount: number
+          batch_id?: string | null
+          captured_at?: string
+          data_source: string
+          id?: string
+          period_month: string
+          reference_date: string
+          section: string
+        }
+        Update: {
+          account_code?: string
+          account_name?: string
+          amount?: number
+          batch_id?: string | null
+          captured_at?: string
+          data_source?: string
+          id?: string
+          period_month?: string
+          reference_date?: string
+          section?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_dre_contabil_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'financial_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      financial_import_batches: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          data_source_label: string
+          error_message: string | null
+          id: string
+          row_count: number
+          source_filename: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          data_source_label?: string
+          error_message?: string | null
+          id?: string
+          row_count?: number
+          source_filename?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          data_source_label?: string
+          error_message?: string | null
+          id?: string
+          row_count?: number
+          source_filename?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_import_batches_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      financial_payables: {
+        Row: {
+          amount_open: number
+          amount_original: number
+          batch_id: string | null
+          captured_at: string
+          currency: string
+          data_source: string
+          document_number: string
+          due_date: string
+          id: string
+          issue_date: string
+          reference_date: string
+          supplier_name: string
+        }
+        Insert: {
+          amount_open: number
+          amount_original: number
+          batch_id?: string | null
+          captured_at?: string
+          currency?: string
+          data_source: string
+          document_number: string
+          due_date: string
+          id?: string
+          issue_date: string
+          reference_date: string
+          supplier_name: string
+        }
+        Update: {
+          amount_open?: number
+          amount_original?: number
+          batch_id?: string | null
+          captured_at?: string
+          currency?: string
+          data_source?: string
+          document_number?: string
+          due_date?: string
+          id?: string
+          issue_date?: string
+          reference_date?: string
+          supplier_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_payables_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'financial_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      financial_receivables: {
+        Row: {
+          amount_open: number
+          amount_original: number
+          batch_id: string | null
+          captured_at: string
+          currency: string
+          customer_name: string
+          data_source: string
+          document_number: string
+          due_date: string
+          id: string
+          issue_date: string
+          reference_date: string
+        }
+        Insert: {
+          amount_open: number
+          amount_original: number
+          batch_id?: string | null
+          captured_at?: string
+          currency?: string
+          customer_name: string
+          data_source: string
+          document_number: string
+          due_date: string
+          id?: string
+          issue_date: string
+          reference_date: string
+        }
+        Update: {
+          amount_open?: number
+          amount_original?: number
+          batch_id?: string | null
+          captured_at?: string
+          currency?: string
+          customer_name?: string
+          data_source?: string
+          document_number?: string
+          due_date?: string
+          id?: string
+          issue_date?: string
+          reference_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_receivables_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'financial_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      financial_tax_entries: {
+        Row: {
+          amount: number
+          batch_id: string | null
+          captured_at: string
+          data_source: string
+          id: string
+          period_month: string
+          reference_date: string
+          tax_code: string
+          tax_name: string
+        }
+        Insert: {
+          amount: number
+          batch_id?: string | null
+          captured_at?: string
+          data_source: string
+          id?: string
+          period_month: string
+          reference_date: string
+          tax_code: string
+          tax_name: string
+        }
+        Update: {
+          amount?: number
+          batch_id?: string | null
+          captured_at?: string
+          data_source?: string
+          id?: string
+          period_month?: string
+          reference_date?: string
+          tax_code?: string
+          tax_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'financial_tax_entries_batch_id_fkey'
+            columns: ['batch_id']
+            isOneToOne: false
+            referencedRelation: 'financial_import_batches'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       gestao_import_snapshots: {
         Row: {
           captured_at: string
@@ -2597,6 +2926,7 @@ export type Database = {
     Functions: {
       can_approve_purchases: { Args: never; Returns: boolean }
       can_manage_inventory: { Args: never; Returns: boolean }
+      can_manage_financial_panel: { Args: never; Returns: boolean }
       can_manage_management_panel: { Args: never; Returns: boolean }
       can_manage_product_catalog: { Args: never; Returns: boolean }
       can_manage_purchases: { Args: never; Returns: boolean }
@@ -2605,6 +2935,24 @@ export type Database = {
       can_manage_workshop: { Args: never; Returns: boolean }
       dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */
+      financial_ap_delinquency_summary: {
+        Args: never
+        Returns: {
+          lines_open: number
+          overdue_lines: number
+          overdue_open: number
+          total_open: number
+        }[]
+      }
+      financial_ar_delinquency_summary: {
+        Args: never
+        Returns: {
+          lines_open: number
+          overdue_lines: number
+          overdue_open: number
+          total_open: number
+        }[]
+      }
       eval_product_registration: {
         Args: { p: Record<string, unknown> }
         Returns: { pendencies: string[]; score: number }[]

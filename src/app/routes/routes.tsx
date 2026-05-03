@@ -27,6 +27,8 @@ import { ImprovementsAccess } from '@modules/improvements/routes/ImprovementsAcc
 import { ImprovementsPage } from '@modules/improvements/routes/ImprovementsPage';
 import { ManagementPanelAccess } from '@modules/management-panel/routes/ManagementPanelAccess';
 import { ManagementPanelPage } from '@modules/management-panel/routes/ManagementPanelPage';
+import { FinancialPanelAccess } from '@modules/financial-panel/routes/FinancialPanelAccess';
+import { FinancialPanelPage } from '@modules/financial-panel/routes/FinancialPanelPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -92,6 +94,10 @@ export function AppRoutes() {
 
         <Route path="management-panel" element={<ManagementPanelAccess />}>
           <Route index element={<ManagementPanelPage />} />
+        </Route>
+
+        <Route path="financial-panel" element={<FinancialPanelAccess />}>
+          <Route index element={<FinancialPanelPage />} />
         </Route>
       </Route>
 
