@@ -8,7 +8,7 @@ Base conceitual: organizar a empresa pelo padrão novo, migrando por ondas, com 
 
 Versão: 1.0
 Produto: Aquimaq CRM
-Stack recomendada: React + Vite + TypeScript + Supabase Cloud + n8n em VPS Hostinger
+Stack recomendada: React + Vite + TypeScript + Supabase Cloud (n8n em VPS Hostinger — **fase posterior**, após o núcleo web estabilizado)
 ERP legado: permanece como sistema oficial enquanto necessário
 Escopo: sistema completo com os 4 MVPs incluídos desde o planejamento inicial
 
@@ -123,7 +123,7 @@ Painel Gerencial Financeiro
 Painel Gerencial Contábil
 Rotina Semanal
 Melhorias
-Automações n8n
+Automações (n8n — fase posterior)
 Integrações com ERP legado
 Importações por CSV/Excel/API/e-mail
 Permissões
@@ -1260,7 +1260,7 @@ clientes em atraso
 ERP legado
 relatórios financeiros
 planilhas do financeiro
-importação n8n
+importação agendada (n8n ou job — fase posterior)
 ```
 
 ### Regras
@@ -1461,6 +1461,9 @@ melhoria deve ter resultado medido
 
 Automatizar importações, alertas e resumos.
 
+**Implementação:** fase posterior ao núcleo (React + Supabase); esta secção descreve o alvo, não o entregável imediato do repositório.
+
+
 ## Workflows obrigatórios
 
 ### 1. Importação de produtos do ERP
@@ -1596,7 +1599,7 @@ Supabase Edge Functions
 ## Automação
 
 ```txt
-n8n em VPS Hostinger
+n8n em VPS Hostinger (fase posterior ao núcleo)
 ```
 
 ## BI auxiliar
@@ -1621,7 +1624,7 @@ ERP legado
   ↓
 API / CSV / Excel / relatório por e-mail
   ↓
-n8n
+n8n (opcional, fase posterior) ou importação directa / Edge Functions
   ↓
 Supabase Cloud
   ↓
@@ -1681,6 +1684,40 @@ src/
 ---
 
 # 24. Modelagem de banco
+
+## Abordagem — migrações e convenções físicas
+
+### Migrações (`supabase/migrations/`)
+
+- Ficheiros versionados: prefixo `YYYYMMDDHHMMSS` + sufixo descritivo em `snake_case`.
+- **Uma fase do roadmap não implica um único ficheiro:** podem existir várias migrações por fase (schema, RLS, seeds, triggers) para rastreio fino e alterações mais seguras.
+- **Correcções e alinhamentos** podem ter migração própria sem número de fase no nome (`hotfix_*`, `align_*`, etc.).
+- O histórico aplicado no Supabase remoto pode divergir dos ficheiros locais após `migration repair` ou aplicação via MCP — alinhar com `supabase db pull` / comparar `supabase_migrations` quando o ambiente não bater com o Git.
+
+### Nomenclatura
+
+- **Tabelas:** `snake_case`; preferência por **plural** (`products`, `purchase_orders`). Exceções aceites: `profiles` (singular histórico), tabelas com prefixo de domínio (`erp_products`, `management_*`).
+- **FKs:** padrão `<referência>_id` (`brand_id`, `result_center_id`, `work_order_id`). Nomes compostos mantêm legibilidade (`erp_product_id`, `responsible_user_id`).
+
+### Soft delete e estado
+
+- **Padrão actual no CRM:** inactivação com **`is_active`** (boolean) ou estados equivalentes; não se exige `deleted_at` em todas as entidades legadas.
+- **`deleted_at`:** usar em novas mestras ou refactors quando o requisito for apagamento lógico auditável por data; não é requisito retroactivo universal.
+
+### Campos padrão (por tipo de tabela)
+
+- **Base mínima:** `id uuid` PK, `created_at timestamptz`, `updated_at timestamptz` (onde fizer sentido).
+- **Mestras / operações sensíveis (novas ou em refactor):** acrescentar `created_by uuid`, `updated_by uuid` (referência a `profiles`) quando o produto exigir rastreio explícito de autor; o trigger de auditoria continua a registar o diff em `audit_logs`.
+- **Legado:** tabelas já estáveis podem não ter o pacote completo até evolução controlada.
+
+### Auditoria
+
+- **Função genérica** `log_row_audit()` ligada por trigger às tabelas acordadas; **destino único** `audit_logs` (`entity_type`, `entity_id`, `action`, `old_row`, `new_row`, `changed_by`, `created_at`).
+
+### Indicadores pesados e cargas agendadas
+
+- Agregações muito pesadas (ex.: pré-cálculo para dashboards) podem evoluir para **views materializadas** ou tabelas de snapshot com refresh por job — **fora do núcleo actual**; definir quando o volume o justificar.
+- **n8n** (VPS, workflows) mantém-se como automação complementar no roadmap, mas **fica para depois** do núcleo React + Supabase; não entra no critério de aceite das migrações do repositório nesta fase.
 
 ## Auth e permissões
 
@@ -2073,7 +2110,7 @@ Automatizar importações, alertas e rotina de melhoria.
 ### Escopo
 
 ```txt
-n8n integrado
+n8n integrado (fase posterior; importações iniciais via CSV/UI/Supabase)
 importações agendadas
 logs de importação
 alertas automáticos
@@ -2090,7 +2127,7 @@ auditoria avançada
 ### Critérios de aceite
 
 ```txt
-n8n importa dados do ERP
+importação de dados do ERP funciona (n8n ou caminho equivalente acordado na fase de automação)
 falhas de importação ficam registradas
 resumo semanal é gerado automaticamente
 alertas criam tarefas
@@ -2208,10 +2245,10 @@ obrigações
 balanço importado, se disponível
 ```
 
-## Semana 11 — n8n
+## Semana 11 — Automação (n8n, fase posterior)
 
 ```txt
-importações
+importações agendadas (quando n8n estiver em produção)
 alertas
 resumo semanal
 logs
