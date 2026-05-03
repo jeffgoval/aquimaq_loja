@@ -215,56 +215,104 @@ export type Database = {
       brands: {
         Row: {
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'brands_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'brands_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       cost_centers: {
         Row: {
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'cost_centers_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'cost_centers_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       erp_customers: {
         Row: {
@@ -1301,29 +1349,53 @@ export type Database = {
       product_categories: {
         Row: {
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'product_categories_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_categories_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       product_cost_history: {
         Row: {
@@ -1627,7 +1699,9 @@ export type Database = {
           brand_id: string | null
           category_id: string | null
           created_at: string
+          created_by: string | null
           default_location: string | null
+          deleted_at: string | null
           description: string
           erp_code: string | null
           erp_product_id: string | null
@@ -1656,6 +1730,7 @@ export type Database = {
           unit_purchase_id: string | null
           unit_sale_id: string | null
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           abc_class?: string | null
@@ -1663,7 +1738,9 @@ export type Database = {
           brand_id?: string | null
           category_id?: string | null
           created_at?: string
+          created_by?: string | null
           default_location?: string | null
+          deleted_at?: string | null
           description: string
           erp_code?: string | null
           erp_product_id?: string | null
@@ -1692,6 +1769,7 @@ export type Database = {
           unit_purchase_id?: string | null
           unit_sale_id?: string | null
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           abc_class?: string | null
@@ -1699,7 +1777,9 @@ export type Database = {
           brand_id?: string | null
           category_id?: string | null
           created_at?: string
+          created_by?: string | null
           default_location?: string | null
+          deleted_at?: string | null
           description?: string
           erp_code?: string | null
           erp_product_id?: string | null
@@ -1728,6 +1808,7 @@ export type Database = {
           unit_purchase_id?: string | null
           unit_sale_id?: string | null
           updated_at?: string
+          updated_by?: string | null
         }
         Relationships: [
           {
@@ -1742,6 +1823,13 @@ export type Database = {
             columns: ['category_id']
             isOneToOne: false
             referencedRelation: 'product_categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
             referencedColumns: ['id']
           },
           {
@@ -1791,6 +1879,13 @@ export type Database = {
             columns: ['unit_sale_id']
             isOneToOne: false
             referencedRelation: 'units'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
             referencedColumns: ['id']
           },
         ]
@@ -2165,57 +2260,90 @@ export type Database = {
       result_centers: {
         Row: {
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'result_centers_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'result_centers_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       subcategories: {
         Row: {
           category_id: string
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           category_id: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           category_id?: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
         Relationships: [
           {
@@ -2225,11 +2353,27 @@ export type Database = {
             referencedRelation: "product_categories"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: 'subcategories_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'subcategories_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
         ]
       }
       suppliers: {
         Row: {
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           document: string | null
           email: string | null
           id: string
@@ -2238,9 +2382,12 @@ export type Database = {
           notes: string | null
           phone: string | null
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           document?: string | null
           email?: string | null
           id?: string
@@ -2249,9 +2396,12 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           document?: string | null
           email?: string | null
           id?: string
@@ -2260,38 +2410,78 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'suppliers_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'suppliers_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       stock_locations: {
         Row: {
           code: string
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           code: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           code?: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'stock_locations_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'stock_locations_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       stock_movements: {
         Row: {
@@ -2365,28 +2555,52 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           id: string
           is_active: boolean
           name: string
           sort_order: number
+          updated_by: string | null
         }
         Insert: {
           code: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           id?: string
           is_active?: boolean
           name: string
           sort_order?: number
+          updated_by?: string | null
         }
         Update: {
           code?: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           id?: string
           is_active?: boolean
           name?: string
           sort_order?: number
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'stock_types_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'stock_types_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       tasks: {
         Row: {
@@ -2464,31 +2678,55 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          created_by: string | null
+          deleted_at: string | null
           description: string | null
           id: string
           is_active: boolean
           name: string
           updated_at: string
+          updated_by: string | null
         }
         Insert: {
           code: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name: string
           updated_at?: string
+          updated_by?: string | null
         }
         Update: {
           code?: string
           created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
+          updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'units_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'units_updated_by_fkey'
+            columns: ['updated_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
       }
       seasonal_factors: {
         Row: {

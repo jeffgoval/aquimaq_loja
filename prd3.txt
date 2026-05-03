@@ -1701,14 +1701,14 @@ src/
 
 ### Soft delete e estado
 
-- **Padrão actual no CRM:** inactivação com **`is_active`** (boolean) ou estados equivalentes; não se exige `deleted_at` em todas as entidades legadas.
-- **`deleted_at`:** usar em novas mestras ou refactors quando o requisito for apagamento lógico auditável por data; não é requisito retroactivo universal.
+- **Padrão no CRM:** **`is_active`** continua a marcar inactivação operacional; **`deleted_at`** marca remoção lógica (esconde listagens) nas mestras já alinhadas: `brands`, `cost_centers`, `suppliers`, `units`, `product_categories`, `subcategories`, `result_centers`, `products`, `stock_locations`, `stock_types`. Na UI, «apagar» estrutura faz `UPDATE` com `deleted_at` + `is_active = false` (sem `DELETE` físico).
+- **Outras tabelas:** seguir o mesmo pacote quando forem refactoradas.
 
 ### Campos padrão (por tipo de tabela)
 
 - **Base mínima:** `id uuid` PK, `created_at timestamptz`, `updated_at timestamptz` (onde fizer sentido).
-- **Mestras / operações sensíveis (novas ou em refactor):** acrescentar `created_by uuid`, `updated_by uuid` (referência a `profiles`) quando o produto exigir rastreio explícito de autor; o trigger de auditoria continua a registar o diff em `audit_logs`.
-- **Legado:** tabelas já estáveis podem não ter o pacote completo até evolução controlada.
+- **Mestras alinhadas:** `created_by`, `updated_by` (→ `profiles`) preenchidos pelo trigger `crm_set_master_row_audit()` em insert/update autenticado; a app não deve forjar estes campos no cliente.
+- **Legado:** outras tabelas podem não ter o pacote completo até evolução controlada; o trigger `log_row_audit()` continua a registar diffs em `audit_logs`.
 
 ### Auditoria
 

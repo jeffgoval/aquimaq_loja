@@ -96,7 +96,12 @@ export async function getGerencialVendaQtyForProduct(productId: string): Promise
 }
 
 export async function getProductMinStock(productId: string): Promise<number | null> {
-  const { data, error } = await supabase.from('products').select('min_stock').eq('id', productId).maybeSingle();
+  const { data, error } = await supabase
+    .from('products')
+    .select('min_stock')
+    .eq('id', productId)
+    .is('deleted_at', null)
+    .maybeSingle();
   if (error) throw new Error(error.message);
   return data?.min_stock ?? null;
 }

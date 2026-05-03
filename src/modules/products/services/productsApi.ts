@@ -23,11 +23,15 @@ const productSelect = `
   unit_purchase:units!products_unit_purchase_id_fkey(id,code,name),
   unit_sale:units!products_unit_sale_id_fkey(id,code,name),
   result_center:result_centers(id,name),
-  responsible:profiles(id,full_name)
+  responsible:profiles!products_responsible_user_id_fkey(id,full_name)
 `;
 
 export async function listProducts(): Promise<ProductListRow[]> {
-  const { data, error } = await supabase.from('products').select(productSelect).order('description', { ascending: true });
+  const { data, error } = await supabase
+    .from('products')
+    .select(productSelect)
+    .is('deleted_at', null)
+    .order('description', { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as ProductListRow[];
 }
@@ -38,10 +42,17 @@ export async function getProduct(id: string): Promise<ProductListRow | null> {
   return data as ProductListRow | null;
 }
 
-/** Campos calculados no trigger — não enviar no insert/update. */
+/** Campos calculados no trigger ou preenchidos no servidor — não enviar no insert/update. */
 export function stripComputedForWrite<T extends Record<string, unknown>>(row: T): Omit<
   T,
-  'registration_score' | 'pendencies' | 'registration_status' | 'created_at' | 'updated_at'
+  | 'registration_score'
+  | 'pendencies'
+  | 'registration_status'
+  | 'created_at'
+  | 'updated_at'
+  | 'created_by'
+  | 'updated_by'
+  | 'deleted_at'
 > {
   const {
     registration_score: _rs,
@@ -49,6 +60,9 @@ export function stripComputedForWrite<T extends Record<string, unknown>>(row: T)
     registration_status: _rst,
     created_at: _c,
     updated_at: _u,
+    created_by: _cb,
+    updated_by: _ub,
+    deleted_at: _da,
     ...rest
   } = row as Record<string, unknown>;
   return rest as Omit<T, never>;
@@ -66,6 +80,15 @@ export async function updateProduct(id: string, patch: ProductUpdate): Promise<P
   const { data, error } = await supabase.from('products').update(payload).eq('id', id).select('*').single();
   if (error) throw new Error(error.message);
   return data as ProductRow;
+}
+
+/** Soft delete: remove da listagem operacional sem apagar a linha. */
+export async function softDeleteProduct(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('products')
+    .update({ deleted_at: new Date().toISOString(), is_active: false })
+    .eq('id', id);
+  if (error) throw new Error(error.message);
 }
 
 export async function listProductCostHistory(productId: string) {

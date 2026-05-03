@@ -55,8 +55,17 @@ export async function fetchNewStandardSnapshot(): Promise<NewStandardSnapshot> {
   const pct = typeof raw === 'number' ? raw : Number(raw ?? 0);
 
   const [active, ns] = await Promise.all([
-    supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
-    supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true).eq('is_new_standard', true),
+    supabase
+      .from('products')
+      .select('*', { count: 'exact', head: true })
+      .eq('is_active', true)
+      .is('deleted_at', null),
+    supabase
+      .from('products')
+      .select('*', { count: 'exact', head: true })
+      .eq('is_active', true)
+      .eq('is_new_standard', true)
+      .is('deleted_at', null),
   ]);
   if (active.error) throw new Error(active.error.message);
   if (ns.error) throw new Error(ns.error.message);

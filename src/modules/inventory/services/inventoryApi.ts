@@ -34,13 +34,18 @@ export type StockMovementListRow = {
 };
 
 export async function listStockTypes(): Promise<StockTypeRow[]> {
-  const { data, error } = await supabase.from('stock_types').select('*').eq('is_active', true).order('sort_order');
+  const { data, error } = await supabase
+    .from('stock_types')
+    .select('*')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .order('sort_order');
   if (error) throw new Error(error.message);
   return (data ?? []) as StockTypeRow[];
 }
 
 export async function listStockLocations(): Promise<StockLocationRow[]> {
-  const { data, error } = await supabase.from('stock_locations').select('*').order('code');
+  const { data, error } = await supabase.from('stock_locations').select('*').is('deleted_at', null).order('code');
   if (error) throw new Error(error.message);
   return (data ?? []) as StockLocationRow[];
 }
@@ -82,6 +87,7 @@ export async function listProductsForStock(): Promise<ProductOption[]> {
     .from('products')
     .select('id, internal_code, description')
     .eq('is_active', true)
+    .is('deleted_at', null)
     .order('description', { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as ProductOption[];

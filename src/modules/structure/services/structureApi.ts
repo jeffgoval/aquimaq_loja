@@ -20,6 +20,7 @@ export async function listStructureRows(
   const { data, error } = await supabase
     .from(table)
     .select('*')
+    .is('deleted_at', null)
     .order(order.column, { ascending: order.ascending ?? true, nullsFirst: false });
   if (error) throw new Error(error.message);
   return (data ?? []) as StructureRow[];
@@ -45,7 +46,10 @@ export async function updateStructureRow(
 }
 
 export async function deleteStructureRow(table: StructureTableName, id: string): Promise<void> {
-  const { error } = await supabase.from(table).delete().eq('id', id);
+  const { error } = await supabase
+    .from(table)
+    .update({ deleted_at: new Date().toISOString(), is_active: false })
+    .eq('id', id);
   if (error) throw new Error(error.message);
 }
 
