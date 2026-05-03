@@ -6,6 +6,10 @@ import { DashboardPage } from '@modules/dashboard/routes/DashboardPage';
 import { StructureAccess } from '@modules/structure/routes/StructureAccess';
 import { StructureLayout } from '@modules/structure/routes/StructureLayout';
 import { StructureSegmentPage } from '@modules/structure/routes/StructureSegmentPage';
+import { ProductsAccess } from '@modules/products/routes/ProductsAccess';
+import { ProductsListPage } from '@modules/products/routes/ProductsListPage';
+import { ProductEditorPage } from '@modules/products/routes/ProductEditorPage';
+import { ProductImportPage } from '@modules/products/routes/ProductImportPage';
 import { NotFoundPage } from './NotFoundPage';
 
 /**
@@ -30,6 +34,13 @@ export function AppRoutes() {
             <Route index element={<Navigate to="result-centers" replace />} />
             <Route path=":segment" element={<StructureSegmentPage />} />
           </Route>
+        </Route>
+
+        <Route path="products" element={<ProductsAccess />}>
+          <Route index element={<ProductsListPage />} />
+          <Route path="import" element={<ProductImportPage />} />
+          <Route path="new" element={<ProductEditorPage />} />
+          <Route path=":id/edit" element={<ProductEditorPage />} />
         </Route>
       </Route>
 

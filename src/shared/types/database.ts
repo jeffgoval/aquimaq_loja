@@ -740,6 +740,358 @@ export type Database = {
         }
         Relationships: []
       }
+      product_cost_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_cost: number | null
+          previous_cost: number | null
+          product_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_cost?: number | null
+          previous_cost?: number | null
+          product_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_cost?: number | null
+          previous_cost?: number | null
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'product_cost_history_changed_by_fkey'
+            columns: ['changed_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_cost_history_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      product_price_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_cost_snapshot: number | null
+          new_margin_pct: number | null
+          new_price: number | null
+          previous_cost_snapshot: number | null
+          previous_margin_pct: number | null
+          previous_price: number | null
+          product_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_cost_snapshot?: number | null
+          new_margin_pct?: number | null
+          new_price?: number | null
+          previous_cost_snapshot?: number | null
+          previous_margin_pct?: number | null
+          previous_price?: number | null
+          product_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_cost_snapshot?: number | null
+          new_margin_pct?: number | null
+          new_price?: number | null
+          previous_cost_snapshot?: number | null
+          previous_margin_pct?: number | null
+          previous_price?: number | null
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'product_price_history_changed_by_fkey'
+            columns: ['changed_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_price_history_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      product_score_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_score: number | null
+          pendencies_snapshot: string[] | null
+          previous_score: number | null
+          product_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_score?: number | null
+          pendencies_snapshot?: string[] | null
+          previous_score?: number | null
+          product_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_score?: number | null
+          pendencies_snapshot?: string[] | null
+          previous_score?: number | null
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'product_score_history_changed_by_fkey'
+            columns: ['changed_by']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_score_history_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      product_suppliers: {
+        Row: {
+          created_at: string
+          is_alternate: boolean
+          product_id: string
+          supplier_id: string
+        }
+        Insert: {
+          created_at?: string
+          is_alternate?: boolean
+          product_id: string
+          supplier_id: string
+        }
+        Update: {
+          created_at?: string
+          is_alternate?: boolean
+          product_id?: string
+          supplier_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'product_suppliers_product_id_fkey'
+            columns: ['product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'product_suppliers_supplier_id_fkey'
+            columns: ['supplier_id']
+            isOneToOne: false
+            referencedRelation: 'suppliers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      products: {
+        Row: {
+          abc_class: string | null
+          barcode: string | null
+          brand_id: string | null
+          category_id: string | null
+          created_at: string
+          default_location: string | null
+          description: string
+          erp_code: string | null
+          erp_product_id: string | null
+          factory_code: string | null
+          id: string
+          internal_code: string
+          is_active: boolean
+          is_new_standard: boolean
+          last_reviewed_at: string | null
+          management_cost: number | null
+          management_price: number | null
+          margin_minimum_pct: number | null
+          margin_target_pct: number | null
+          max_discount_pct: number | null
+          max_stock: number | null
+          min_stock: number | null
+          notes: string | null
+          pendencies: string[]
+          primary_supplier_id: string | null
+          registration_score: number
+          registration_status: string
+          responsible_user_id: string | null
+          result_center_id: string | null
+          subcategory_id: string | null
+          unit_conversion_factor: number
+          unit_purchase_id: string | null
+          unit_sale_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          abc_class?: string | null
+          barcode?: string | null
+          brand_id?: string | null
+          category_id?: string | null
+          created_at?: string
+          default_location?: string | null
+          description: string
+          erp_code?: string | null
+          erp_product_id?: string | null
+          factory_code?: string | null
+          id?: string
+          internal_code: string
+          is_active?: boolean
+          is_new_standard?: boolean
+          last_reviewed_at?: string | null
+          management_cost?: number | null
+          management_price?: number | null
+          margin_minimum_pct?: number | null
+          margin_target_pct?: number | null
+          max_discount_pct?: number | null
+          max_stock?: number | null
+          min_stock?: number | null
+          notes?: string | null
+          pendencies?: string[]
+          primary_supplier_id?: string | null
+          registration_score?: number
+          registration_status?: string
+          responsible_user_id?: string | null
+          result_center_id?: string | null
+          subcategory_id?: string | null
+          unit_conversion_factor?: number
+          unit_purchase_id?: string | null
+          unit_sale_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          abc_class?: string | null
+          barcode?: string | null
+          brand_id?: string | null
+          category_id?: string | null
+          created_at?: string
+          default_location?: string | null
+          description?: string
+          erp_code?: string | null
+          erp_product_id?: string | null
+          factory_code?: string | null
+          id?: string
+          internal_code?: string
+          is_active?: boolean
+          is_new_standard?: boolean
+          last_reviewed_at?: string | null
+          management_cost?: number | null
+          management_price?: number | null
+          margin_minimum_pct?: number | null
+          margin_target_pct?: number | null
+          max_discount_pct?: number | null
+          max_stock?: number | null
+          min_stock?: number | null
+          notes?: string | null
+          pendencies?: string[]
+          primary_supplier_id?: string | null
+          registration_score?: number
+          registration_status?: string
+          responsible_user_id?: string | null
+          result_center_id?: string | null
+          subcategory_id?: string | null
+          unit_conversion_factor?: number
+          unit_purchase_id?: string | null
+          unit_sale_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'products_brand_id_fkey'
+            columns: ['brand_id']
+            isOneToOne: false
+            referencedRelation: 'brands'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_category_id_fkey'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'product_categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_erp_product_id_fkey'
+            columns: ['erp_product_id']
+            isOneToOne: false
+            referencedRelation: 'erp_products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_primary_supplier_id_fkey'
+            columns: ['primary_supplier_id']
+            isOneToOne: false
+            referencedRelation: 'suppliers'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_responsible_user_id_fkey'
+            columns: ['responsible_user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_result_center_id_fkey'
+            columns: ['result_center_id']
+            isOneToOne: false
+            referencedRelation: 'result_centers'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_subcategory_id_fkey'
+            columns: ['subcategory_id']
+            isOneToOne: false
+            referencedRelation: 'subcategories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_unit_purchase_id_fkey'
+            columns: ['unit_purchase_id']
+            isOneToOne: false
+            referencedRelation: 'units'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'products_unit_sale_id_fkey'
+            columns: ['unit_sale_id']
+            isOneToOne: false
+            referencedRelation: 'units'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -1066,6 +1418,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_manage_master_products: { Args: never; Returns: boolean }
+      /** Linha `products` (trigger); uso típico só no SQL. */
+      eval_product_registration: {
+        Args: { p: Record<string, unknown> }
+        Returns: { pendencies: string[]; score: number }[]
+      }
       generate_product_alerts: { Args: never; Returns: number }
       get_purchase_suggestions: {
         Args: { p_priority_filter?: string }
