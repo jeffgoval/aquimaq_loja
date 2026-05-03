@@ -1662,7 +1662,7 @@ export type Database = {
     }
     Functions: {
       can_manage_inventory: { Args: never; Returns: boolean }
-      can_manage_master_products: { Args: never; Returns: boolean }
+      can_manage_product_catalog: { Args: never; Returns: boolean }
       dashboard_new_standard_pct: { Args: never; Returns: number }
       /** Linha `products` (trigger); uso típico só no SQL. */
       eval_product_registration: {

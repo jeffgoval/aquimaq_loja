@@ -115,8 +115,8 @@ export function ProductEditorPage() {
     enabled: Boolean(id),
   });
 
-  const masters = useQuery({
-    queryKey: ['products', 'masters'],
+  const catalogLookups = useQuery({
+    queryKey: ['products', 'catalog-lookups'],
     queryFn: async () => {
       const [categories, brands, suppliers, units, centers, profiles] = await Promise.all([
         listCategories(),
@@ -147,7 +147,7 @@ export function ProductEditorPage() {
   const erpSearch = useQuery({
     queryKey: ['products', 'erp-search', erpQ, erpBrowse],
     queryFn: () => searchErpProducts(erpBrowse ? '' : erpQ),
-    enabled: Boolean(masters.isSuccess && (erpBrowse || erpQ.trim().length >= 2)),
+    enabled: Boolean(catalogLookups.isSuccess && (erpBrowse || erpQ.trim().length >= 2)),
   });
 
   const alternatesQuery = useQuery({
@@ -168,13 +168,13 @@ export function ProductEditorPage() {
   }, [isCreate, productQuery.data, form]);
 
   useEffect(() => {
-    if (isCreate && masters.data?.units.length) {
-      const u = masters.data.units[0];
+    if (isCreate && catalogLookups.data?.units.length) {
+      const u = catalogLookups.data.units[0];
       if (!u) return;
       if (!form.getValues('unit_purchase_id')) form.setValue('unit_purchase_id', u.id);
       if (!form.getValues('unit_sale_id')) form.setValue('unit_sale_id', u.id);
     }
-  }, [isCreate, masters.data, form]);
+  }, [isCreate, catalogLookups.data, form]);
 
   const costHist = useQuery({
     queryKey: ['products', 'hist-cost', id],
@@ -249,7 +249,7 @@ export function ProductEditorPage() {
   });
 
   const primaryId = form.watch('primary_supplier_id');
-  const supplierOptions = useMemo(() => masters.data?.suppliers ?? [], [masters.data]);
+  const supplierOptions = useMemo(() => catalogLookups.data?.suppliers ?? [], [catalogLookups.data]);
 
   const toggleAlternate = (sid: string) => {
     if (sid === primaryId) return;
@@ -418,7 +418,7 @@ export function ProductEditorPage() {
                 {...form.register('category_id')}
               >
                 <option value="">—</option>
-                {(masters.data?.categories ?? []).map((c) => (
+                {(catalogLookups.data?.categories ?? []).map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
                   </option>
@@ -442,7 +442,7 @@ export function ProductEditorPage() {
             <FormField id="p-brand_id" label="Marca" error={form.formState.errors.brand_id?.message}>
               <select id="p-brand_id" className="flex h-10 w-full rounded-md border border-border bg-surface px-3 text-sm" {...form.register('brand_id')}>
                 <option value="">—</option>
-                {(masters.data?.brands ?? []).map((b) => (
+                {(catalogLookups.data?.brands ?? []).map((b) => (
                   <option key={b.id} value={b.id}>
                     {b.name}
                   </option>
@@ -456,7 +456,7 @@ export function ProductEditorPage() {
                 {...form.register('result_center_id')}
               >
                 <option value="">—</option>
-                {(masters.data?.centers ?? []).map((c) => (
+                {(catalogLookups.data?.centers ?? []).map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
                   </option>
@@ -525,7 +525,7 @@ export function ProductEditorPage() {
                 {...form.register('unit_purchase_id')}
               >
                 <option value="">—</option>
-                {(masters.data?.units ?? []).map((u) => (
+                {(catalogLookups.data?.units ?? []).map((u) => (
                   <option key={u.id} value={u.id}>
                     {u.code} — {u.name}
                   </option>
@@ -539,7 +539,7 @@ export function ProductEditorPage() {
                 {...form.register('unit_sale_id')}
               >
                 <option value="">—</option>
-                {(masters.data?.units ?? []).map((u) => (
+                {(catalogLookups.data?.units ?? []).map((u) => (
                   <option key={u.id} value={u.id}>
                     {u.code} — {u.name}
                   </option>
@@ -606,7 +606,7 @@ export function ProductEditorPage() {
                 {...form.register('responsible_user_id')}
               >
                 <option value="">—</option>
-                {(masters.data?.profiles ?? []).map((p) => (
+                {(catalogLookups.data?.profiles ?? []).map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
                   </option>

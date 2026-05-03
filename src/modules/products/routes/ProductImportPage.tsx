@@ -56,8 +56,8 @@ export function ProductImportPage() {
   const [mapping, setMapping] = useState<Partial<Record<ProductImportFieldKey, string>>>({});
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
-  const masters = useQuery({
-    queryKey: ['products', 'masters-import'],
+  const catalogLookups = useQuery({
+    queryKey: ['products', 'catalog-lookups-import'],
     queryFn: async () => {
       const [categories, brands, suppliers, units, centers] = await Promise.all([
         listCategories(),
@@ -71,7 +71,7 @@ export function ProductImportPage() {
   });
 
   const maps = useMemo(() => {
-    const m = masters.data;
+    const m = catalogLookups.data;
     if (!m) return null;
     const catByName = new Map(m.categories.map((c) => [c.name.trim().toLowerCase(), c.id]));
     const brandByName = new Map(m.brands.map((b) => [b.name.trim().toLowerCase(), b.id]));
@@ -79,11 +79,11 @@ export function ProductImportPage() {
     const unitByCode = new Map(m.units.map((u) => [u.code.trim().toUpperCase(), u.id]));
     const rcByName = new Map(m.centers.map((c) => [c.name.trim().toLowerCase(), c.id]));
     return { catByName, brandByName, supByName, unitByCode, rcByName };
-  }, [masters.data]);
+  }, [catalogLookups.data]);
 
   const importMutation = useMutation({
     mutationFn: async () => {
-      if (!maps || !masters.data) throw new Error('Mestres ainda carregando');
+      if (!maps || !catalogLookups.data) throw new Error('Mestres ainda carregando');
       const { catByName, brandByName, supByName, unitByCode, rcByName } = maps;
       const errors: string[] = [];
       const inserts: ProductInsert[] = [];
@@ -346,7 +346,7 @@ export function ProductImportPage() {
               <Button type="button" variant="secondary" onClick={() => setStep(2)}>
                 Ajustar mapeamento
               </Button>
-              <Button type="button" disabled={importMutation.isPending || !masters.isSuccess} onClick={() => importMutation.mutate()}>
+              <Button type="button" disabled={importMutation.isPending || !catalogLookups.isSuccess} onClick={() => importMutation.mutate()}>
                 {importMutation.isPending ? 'Importando…' : 'Importar'}
               </Button>
             </div>
