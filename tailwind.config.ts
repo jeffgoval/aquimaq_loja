@@ -15,10 +15,11 @@ export default {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
       },
       colors: {
-        // Aquimaq Slate semantic tokens (consumed via CSS variables for theming)
+        // Aquimaq Verde — tokens semânticos via CSS vars
         background: 'hsl(var(--background))',
         surface: 'hsl(var(--surface))',
         'surface-muted': 'hsl(var(--surface-muted))',
+        'surface-raised': 'hsl(var(--surface-raised))',
         foreground: 'hsl(var(--foreground))',
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -58,11 +59,27 @@ export default {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
         },
+        // Sidebar dark — tokens isolados para não vazar no tema claro
+        sidebar: {
+          bg: 'hsl(var(--sidebar-bg))',
+          border: 'hsl(var(--sidebar-border))',
+          fg: 'hsl(var(--sidebar-fg))',
+          'fg-muted': 'hsl(var(--sidebar-fg-muted))',
+          'item-hover': 'hsl(var(--sidebar-item-hover))',
+          'item-active': 'hsl(var(--sidebar-item-active))',
+          'item-active-fg': 'hsl(var(--sidebar-item-active-fg))',
+          'logo-bg': 'hsl(var(--sidebar-logo-bg))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        md: 'calc(var(--radius) - 1px)',
+        sm: 'calc(var(--radius) - 2px)',
+      },
+      boxShadow: {
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04)',
+        'card-md': '0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+        'card-lg': '0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05)',
       },
       keyframes: {
         'accordion-down': {

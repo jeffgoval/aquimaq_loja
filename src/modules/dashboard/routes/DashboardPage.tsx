@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { AlertTriangle, ArrowRight, CalendarClock, ListTodo, Package, Percent } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CalendarClock, ListTodo, Package, TrendingUp } from 'lucide-react';
 import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ds/primitives';
 import { useCurrentUser } from '@modules/auth/hooks/useAuth';
 import { countOpenStockBelowMinAlerts } from '@modules/inventory/services/inventoryApi';
@@ -50,16 +50,18 @@ function AlertRowItem({ row }: { row: AlertListItem }) {
   const critical = isCriticalPriority(row.priority, row.impact);
   return (
     <div
-      className={`flex flex-col gap-1 border-b border-border py-3 last:border-0 last:pb-0 ${critical ? 'pl-2 border-l-2 border-l-danger' : ''}`}
+      className={`flex flex-col gap-1 border-b border-border py-3 last:border-0 last:pb-0 ${
+        critical ? 'pl-3 border-l-2 border-l-danger -ml-px' : ''
+      }`}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-medium text-foreground">{row.title}</span>
+        <span className="text-[13px] font-semibold text-foreground">{row.title}</span>
         <Badge variant={priorityBadgeVariant(row.priority)}>{row.priority}</Badge>
         {row.type ? (
-          <span className="text-[11px] uppercase tracking-wide text-muted-foreground">{row.type}</span>
+          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{row.type}</span>
         ) : null}
       </div>
-      <p className="line-clamp-2 text-xs text-muted-foreground">{row.reason}</p>
+      <p className="line-clamp-2 text-[12px] text-muted-foreground leading-relaxed">{row.reason}</p>
       <div className="flex flex-wrap gap-3 text-[11px] text-muted-foreground">
         {row.due_date ? <span>Prazo {formatShortDate(row.due_date)}</span> : null}
         {row.responsible?.full_name ? <span>Resp. {row.responsible.full_name}</span> : null}
@@ -73,11 +75,11 @@ function WeeklyRowItem({ row }: { row: WeeklyActionListItem }) {
   return (
     <div className="flex flex-col gap-1 border-b border-border py-3 last:border-0 last:pb-0">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-medium text-foreground">{row.title}</span>
+        <span className="text-[13px] font-semibold text-foreground">{row.title}</span>
         <Badge variant="secondary">{row.priority}</Badge>
       </div>
       {row.description ? (
-        <p className="line-clamp-2 text-xs text-muted-foreground">{row.description}</p>
+        <p className="line-clamp-2 text-[12px] text-muted-foreground leading-relaxed">{row.description}</p>
       ) : null}
       <div className="flex flex-wrap gap-3 text-[11px] text-muted-foreground">
         <span>Prazo {formatShortDate(row.due_date)}</span>
@@ -87,7 +89,36 @@ function WeeklyRowItem({ row }: { row: WeeklyActionListItem }) {
   );
 }
 
-/** Painel principal: indicador de adesão ao padrão interno, alertas prioritários e acções da rotina semanal. */
+function StatCard({
+  to,
+  icon: Icon,
+  label,
+  value,
+  loading,
+}: {
+  to: string;
+  icon: React.FC<{ className?: string }>;
+  label: string;
+  value: number | undefined;
+  loading: boolean;
+}) {
+  return (
+    <Link
+      to={to}
+      className="flex items-center justify-between rounded border border-border bg-surface px-4 py-3 shadow-card transition-shadow hover:shadow-card-md"
+    >
+      <span className="flex items-center gap-2 text-[13px] text-muted-foreground">
+        <Icon className="h-3.5 w-3.5" />
+        {label}
+      </span>
+      <span className="tabular-nums text-xl font-bold text-foreground">
+        {loading ? '—' : (value ?? 0)}
+      </span>
+    </Link>
+  );
+}
+
+/** Painel principal: adesão ao padrão novo, alertas prioritários e ações da rotina semanal. */
 export function DashboardPage() {
   const user = useCurrentUser();
   const snapshotQ = useQuery<NewStandardSnapshot>({
@@ -114,36 +145,86 @@ export function DashboardPage() {
   const criticalCount = (alertsQ.data ?? []).filter((a) => isCriticalPriority(a.priority, a.impact)).length;
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+    <div className="space-y-6 max-w-[1200px]">
+      {/* Cabeçalho */}
+      <div className="flex flex-col gap-0.5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Painel da Casa</h1>
-          <p className="text-sm text-muted-foreground">
-            Olá, <span className="font-medium text-foreground">{user.fullName}</span> ·{' '}
+          <h1 className="text-xl font-semibold tracking-tight text-foreground">Painel da Casa</h1>
+          <p className="text-[13px] text-muted-foreground mt-0.5">
+            Olá, <span className="font-medium text-foreground">{user.fullName}</span>
+            <span className="mx-1.5 text-border-strong">·</span>
             <span className="font-medium text-foreground">{ROLE_LABELS[user.role]}</span>
           </p>
         </div>
-        <p className="text-xs capitalize text-muted-foreground sm:text-right">{formatDayHeader()}</p>
+        <p className="text-[11px] capitalize text-muted-foreground sm:text-right">{formatDayHeader()}</p>
       </div>
 
-      <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-        Resumo operacional: situação de cadastro e padrão novo, riscos em aberto e o que a equipa deve fechar na
-        próxima semana — leitura em cerca de 30 segundos.
-      </p>
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {/* % Padrão novo */}
+        <div className="col-span-2 sm:col-span-2 flex items-stretch gap-3">
+          <Card className="flex-1">
+            <CardHeader className="pb-1">
+              <CardDescription className="flex items-center gap-1.5">
+                <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                Padrão novo
+              </CardDescription>
+              <CardTitle className="text-3xl tabular-nums font-bold text-foreground tracking-tight">
+                {snapshotQ.isLoading ? '—' : `${snap?.pct ?? 0}%`}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-1 text-[12px] text-muted-foreground">
+              {snap ? (
+                <p>
+                  <span className="font-semibold text-foreground">{snap.newStandardCount}</span>
+                  {' de '}
+                  <span className="font-semibold text-foreground">{snap.activeTotal}</span>
+                  {' produtos ativos'}
+                </p>
+              ) : null}
+              <Button variant="outline" size="sm" className="mt-2 gap-1" asChild>
+                <Link to="/products">
+                  <Package className="h-3.5 w-3.5" />
+                  Cadastro mestre
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
+        {/* Stats */}
+        <div className="col-span-2 flex flex-col gap-3">
+          <StatCard
+            to="/tasks"
+            icon={ListTodo}
+            label="Tarefas abertas"
+            value={tasksQ.data}
+            loading={tasksQ.isLoading}
+          />
+          <StatCard
+            to="/inventory"
+            icon={AlertTriangle}
+            label="Estoque abaixo do mínimo"
+            value={stockAlertsQ.data}
+            loading={stockAlertsQ.isLoading}
+          />
+        </div>
+      </div>
+
+      {/* Grid principal */}
       <div className="grid gap-4 lg:grid-cols-12">
-        <Card className="border-amber-500/25 bg-amber-500/[0.03] lg:col-span-7">
-          <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
-            <div className="space-y-1">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
+        {/* Alertas críticos */}
+        <Card className="lg:col-span-7">
+          <CardHeader className="flex flex-row items-start justify-between space-y-0">
+            <div className="space-y-0.5">
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-warning" />
                 Alertas críticos
               </CardTitle>
-              <CardDescription>
-                Abertos, prioridade alta/crítica ou impacto crítico primeiro. Até 12 itens.
-              </CardDescription>
+              <CardDescription>Abertos com prioridade alta/crítica ou impacto crítico. Até 12 itens.</CardDescription>
             </div>
-            {!alertsQ.isLoading ? (
+            {!alertsQ.isLoading && criticalCount > 0 ? (
               <Badge variant="warning" className="shrink-0 tabular-nums">
                 {criticalCount} prioritários
               </Badge>
@@ -151,11 +232,11 @@ export function DashboardPage() {
           </CardHeader>
           <CardContent>
             {alertsQ.isLoading ? (
-              <p className="text-sm text-muted-foreground">A carregar alertas…</p>
+              <p className="text-[13px] text-muted-foreground">A carregar…</p>
             ) : alertsQ.error ? (
-              <p className="text-sm text-danger">{(alertsQ.error as Error).message}</p>
+              <p className="text-[13px] text-danger">{(alertsQ.error as Error).message}</p>
             ) : (alertsQ.data ?? []).length === 0 ? (
-              <p className="text-sm text-muted-foreground">Sem alertas abertos neste momento.</p>
+              <p className="text-[13px] text-muted-foreground">Sem alertas abertos neste momento.</p>
             ) : (
               <div>
                 {(alertsQ.data ?? []).map((row) => (
@@ -166,110 +247,40 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <div className="flex flex-col gap-4 lg:col-span-5">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription className="flex items-center gap-2">
-                <Percent className="h-4 w-4" />
-                % operação no padrão novo
-              </CardDescription>
-              <CardTitle className="text-4xl tabular-nums tracking-tight">
-                {snapshotQ.isLoading ? '…' : `${snap?.pct ?? 0}%`}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
-              {snapshotQ.error ? (
-                <p className="text-danger">{(snapshotQ.error as Error).message}</p>
-              ) : snap ? (
-                <>
-                  <p>
-                    <span className="font-semibold text-foreground">{snap.newStandardCount}</span> de{' '}
-                    <span className="font-semibold text-foreground">{snap.activeTotal}</span> produtos ativos no padrão
-                    novo (cadastro mestre + política comercial).
-                  </p>
-                  <p className="text-xs">
-                    A percentagem é calculada na base de dados; os totais abaixo permitem validar rapidamente o numerador e o
-                    denominador.
-                  </p>
-                </>
-              ) : null}
-              <Button variant="outline" size="sm" className="mt-2 w-full gap-1 sm:w-auto" asChild>
-                <Link to="/products">
-                  <Package className="h-4 w-4" />
-                  Cadastro mestre
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Indicadores rápidos</CardTitle>
-              <CardDescription>Tarefas em aberto e alertas de stock gerencial.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-3 sm:grid-cols-2">
-              <Link
-                to="/tasks"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface-muted/40 px-3 py-2 text-sm transition-colors hover:bg-surface-muted"
-              >
-                <span className="flex items-center gap-2 text-muted-foreground">
-                  <ListTodo className="h-4 w-4" />
-                  Tarefas abertas
-                </span>
-                <span className="tabular-nums text-lg font-semibold text-foreground">
-                  {tasksQ.isLoading ? '…' : tasksQ.data ?? 0}
-                </span>
-              </Link>
-              <Link
-                to="/inventory"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface-muted/40 px-3 py-2 text-sm transition-colors hover:bg-surface-muted"
-              >
-                <span className="flex items-center gap-2 text-muted-foreground">
-                  <AlertTriangle className="h-4 w-4" />
-                  Estoque &lt; mín.
-                </span>
-                <span className="tabular-nums text-lg font-semibold text-foreground">
-                  {stockAlertsQ.isLoading ? '…' : stockAlertsQ.data ?? 0}
-                </span>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      <Card>
-        <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-2 space-y-0">
-          <div>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <CalendarClock className="h-5 w-5 text-primary" />
-              Ações da semana
-            </CardTitle>
-            <CardDescription>Em aberto com prazo nos próximos 14 dias (rotina semanal).</CardDescription>
-          </div>
-          <Button variant="ghost" size="sm" className="gap-1" asChild>
-            <Link to="/tasks">
-              Ver tarefas
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        </CardHeader>
-        <CardContent>
-          {weeklyQ.isLoading ? (
-            <p className="text-sm text-muted-foreground">A carregar ações…</p>
-          ) : weeklyQ.error ? (
-            <p className="text-sm text-danger">{(weeklyQ.error as Error).message}</p>
-          ) : (weeklyQ.data ?? []).length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nenhuma ação semanal pendente neste horizonte.</p>
-          ) : (
+        {/* Ações da semana */}
+        <Card className="lg:col-span-5">
+          <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-2 space-y-0">
             <div>
-              {(weeklyQ.data ?? []).map((row) => (
-                <WeeklyRowItem key={row.id} row={row} />
-              ))}
+              <CardTitle className="flex items-center gap-2">
+                <CalendarClock className="h-4 w-4 text-primary" />
+                Ações da semana
+              </CardTitle>
+              <CardDescription>Prazo nos próximos 14 dias (rotina semanal).</CardDescription>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <Button variant="ghost" size="sm" className="gap-1 -mr-1" asChild>
+              <Link to="/tasks">
+                Ver tarefas
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {weeklyQ.isLoading ? (
+              <p className="text-[13px] text-muted-foreground">A carregar…</p>
+            ) : weeklyQ.error ? (
+              <p className="text-[13px] text-danger">{(weeklyQ.error as Error).message}</p>
+            ) : (weeklyQ.data ?? []).length === 0 ? (
+              <p className="text-[13px] text-muted-foreground">Nenhuma ação pendente neste horizonte.</p>
+            ) : (
+              <div>
+                {(weeklyQ.data ?? []).map((row) => (
+                  <WeeklyRowItem key={row.id} row={row} />
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

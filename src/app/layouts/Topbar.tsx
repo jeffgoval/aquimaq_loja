@@ -29,24 +29,36 @@ export function Topbar() {
     .join('');
 
   return (
-    <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-4">
+    <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-surface px-5 shadow-[0_1px_0_0_hsl(var(--border))]">
       <div className="text-sm text-muted-foreground">
-        {/* Reserved for breadcrumbs / contextual actions per page. */}
+        {/* Reservado para breadcrumbs / ações contextuais por página */}
       </div>
 
-      <div className="flex items-center gap-3">
-        <Badge variant="secondary">{ROLE_LABELS[user.role]}</Badge>
+      <div className="flex items-center gap-2">
+        <Badge variant="secondary" className="hidden sm:inline-flex">
+          {ROLE_LABELS[user.role]}
+        </Badge>
+
+        <div className="mx-1 h-4 w-px bg-border hidden sm:block" />
+
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-muted text-xs font-semibold text-foreground">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
             {initials}
           </div>
-          <div className="hidden text-right leading-tight md:block">
-            <div className="text-sm font-medium">{user.fullName}</div>
+          <div className="hidden text-right leading-snug md:block">
+            <div className="text-[13px] font-medium text-foreground">{user.fullName}</div>
             <div className="text-[11px] text-muted-foreground">{user.email}</div>
           </div>
         </div>
-        <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sair">
-          <LogOut className="h-4 w-4" />
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleSignOut}
+          aria-label="Sair"
+          className="h-7 w-7 text-muted-foreground hover:text-foreground"
+        >
+          <LogOut className="h-3.5 w-3.5" />
         </Button>
       </div>
     </header>
